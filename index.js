@@ -28,5 +28,6 @@ module.exports = {
     "no-extend-native": "off",
     indent: "off",
     "func-names": ["error", "as-needed"],
+    "implicit-arrow-linebreak": "off",
   },
 };
