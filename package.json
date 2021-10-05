@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-cloudhub-base",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -13,8 +13,7 @@
     "eslint-plugin-jsdoc": "^24.0.0",
     "babel-eslint": "^10.1.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jstypelint": "^0.1.0"
+    "eslint-plugin-import": "^2.24.2"
   },
   "devDependencies": {},
   "peerDependencies": {

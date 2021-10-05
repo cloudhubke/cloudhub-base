@@ -1,6 +1,9 @@
 module.exports = {
   parser: "babel-eslint",
   extends: "airbnb-base",
+  parserOptions: {
+    ecmaVersion: 8,
+  },
   rules: {
     "no-underscore-dangle": "off",
     "no-await-in-loop": "off",
