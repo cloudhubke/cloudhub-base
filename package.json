@@ -1,0 +1,33 @@
+{
+  "name": "eslint-plugin-cloudhub-base",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "types",
+    "jsdoc"
+  ],
+  "version": "0.1.0",
+  "description": "type linting for Javascript with JSDoc",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-plugin-jsdoc": "^24.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jstypelint": "^0.1.0"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "eslint": "^7.0.0"
+  },
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "author": "gaithoben@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudhubke/cloudhub-base.git"
+  },
+  "bugs": "https://github.com/cloudhubke/cloudhub-base",
+  "license": "MIT"
+}
