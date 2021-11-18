@@ -1,8 +1,65 @@
+const rootDir = process.cwd();
+
+const includeFiles = require("include-files");
+
+const globals = {};
+
+includeFiles.getDictionary(
+  {
+    dirname: `${rootDir}/api/models`,
+    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    replaceExpr: /^.*\//,
+    flatten: true,
+  },
+  (err, models) => {
+    for (const key in models) {
+      const model = models[key];
+      const ModelObjectName = `${model.globalId}Object`;
+      const DbObjectName = `${model.globalId}Dbo`;
+      globals[ModelObjectName] = true;
+      globals[DbObjectName] = true;
+      globals[`${model.globalId}`] = true;
+      globals[`_${model.globalId}`] = true;
+    }
+  }
+);
+
+includeFiles.exists(
+  {
+    dirname: `${rootDir}/api/services`,
+    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    replaceExpr: /^.*\//,
+    flatten: true,
+  },
+  (err, services) => {
+    for (const key in services) {
+      globals[`${key}`] = true;
+    }
+  }
+);
+
 module.exports = {
   parser: "babel-eslint",
   extends: "airbnb-base",
   parserOptions: {
     ecmaVersion: 8,
+  },
+  globals: {
+    sails: true,
+    db: true,
+    _: true,
+    async: true,
+    moment: true,
+
+    //DBOS
+    refcounters: true,
+    SystemSettings: true,
+    databaseAdapters: true,
+    normalize: true,
+    getDocument: true,
+    Promise: true,
+
+    ...globals,
   },
   rules: {
     "no-underscore-dangle": "off",
@@ -31,6 +88,7 @@ module.exports = {
     "no-extend-native": "off",
     indent: "off",
     "func-names": ["error", "as-needed"],
-    "implicit-arrow-linebreak": "off",
+    "guard-for-in": "off",
+    radix: [0],
   },
 };
