@@ -16,10 +16,11 @@
     "eslint-plugin-jsdoc": "^24.0.0",
     "include-files": "^4.0.5"
   },
-  "devDependencies": {},
-  "peerDependencies": {
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
     "eslint": "^7.0.0"
   },
+  "peerDependencies": {},
   "scripts": {
     "test": "jest --coverage"
   },
