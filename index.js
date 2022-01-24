@@ -40,16 +40,13 @@ includeFiles.exists(
 
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-  ],
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
   extends: [
-    extends: "airbnb-base",
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ]
-  
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+  ],
   parserOptions: {
     ecmaVersion: 8,
   },
