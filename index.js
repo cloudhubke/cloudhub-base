@@ -39,8 +39,17 @@ includeFiles.exists(
 );
 
 module.exports = {
-  parser: "babel-eslint",
-  extends: "airbnb-base",
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+  ],
+  extends: [
+    extends: "airbnb-base",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+  ]
+  
   parserOptions: {
     ecmaVersion: 8,
   },
