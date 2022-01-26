@@ -1,8 +1,16 @@
 const rootDir = process.cwd();
-
+const fs = require("fs");
 const includeFiles = require("include-files");
+const types = require("./types");
+const { getState } = require("./store");
 
 const globals = {};
+
+let oldStr = "";
+
+let modelTypes = "";
+
+let dbCollections = "";
 
 includeFiles.getDictionary(
   {
@@ -20,9 +28,26 @@ includeFiles.getDictionary(
       globals[DbObjectName] = true;
       globals[`${model.globalId}`] = true;
       globals[`_${model.globalId}`] = true;
+
+      modelTypes = `${modelTypes}${types.modelTypes(model.globalId)}`;
     }
+
+    dbCollections = `${types.dbCollections(models)}`;
   }
 );
+
+let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}`;
+
+if (getState().modelTypes !== typeStr) {
+  getState().setModelTypes(typeStr);
+  try {
+    fs.writeFile(`${rootDir}/types/models.d.ts`, `${typeStr}`, function (err) {
+      if (err) {
+        return console.log(err);
+      }
+    });
+  } catch (error) {}
+}
 
 includeFiles.exists(
   {
