@@ -49,10 +49,17 @@ module.exports = {
       
       declare function Transaction(params: TransactionParams): Promise<any>;
 
+      // An instance of an Object. Eg UserObject.
+
+      interface ObjectUpdateOtions {
+        keepNull: boolean;
+        mergeObjects: boolean;
+        trx: any;
+      }
+
       declare interface BaseObjectInstance extends BaseVertex {
-        update(params: any): Promise<void>;
-        destroy (params: any): Promise<void>;
-        getKeyProps(): BaseKeyProps;
+        update(params: any, options:ObjectUpdateOtions): Promise<void>;
+        destroy (params: any, options: ObjectUpdateOtions): Promise<void>;
         saveToCache: () => void;
         getDocument: (params: any) => Promise<BaseObjectInstance>;
         nextId: (name: string) => Promise<number>;
@@ -63,7 +70,6 @@ module.exports = {
         onCreateOrUpdate: () => Promise<void>;
         afterInitialize: () => void;
         reInitialize(params: any): void; 
-        keyProps: BaseKeyProps;
         pkColumnName: string;
         schema: any;
         cache: boolean;
@@ -72,12 +78,41 @@ module.exports = {
         _Transaction: Transaction;
         _dbConnection: any;
       }
-
-    
   
       declare interface BaseEdgeObjectInstance extends BaseObjectInstance, BaseEdge {
         [key: string]: any;
       }
+
+
+      //DBO BASE DECLARATIONS
+
+      interface UpdateOptions {
+        keepNull: boolean;
+        mergeObjects: boolean;
+      }
+
+      declare interface BaseDboInstance extends BaseVertex {
+        update(params: any, options?: UpdateOptions): void;
+        afterInitialize: () => void;
+        reInitialize(params: any): void; 
+        globalId: string;
+        instanceName: string;
+        modelDefaults: any;
+      }
+  
+      // These are the methods of an Object constructor eg. UserDbo.findOne({id})
+      declare interface BaseDbo <instance> {
+        getSchema: () => any;
+        create(params: any): instance;
+        create(from: any, to: any, params: any): instance;
+        getDocument(params: any): instance;
+        findOne(params: any): instance;
+        firstExample(params: any): instance;
+        find(params: any): ArangoDB.Cursor;
+        initialize(params: any): instance;
+    }  
+
+      //End DBO BASE DECLARATIONS
 
       interface WaterlinePromise<T> extends Promise<T>{
         exec(cb: (err: Error, result: T) => void);
@@ -95,15 +130,17 @@ module.exports = {
         populate(association: string, filter: any): QueryBuilder<T>;
     }
 
+    // These are the methods of an Object constructor eg. UserObject.findOne({id})
       declare interface BaseObject <instance> {
         create(params: any): WaterlinePromise<instance>;
         getDocument(params: any): WaterlinePromise<instance>;
         getOne(params: any): WaterlinePromise<instance>;
         findOne(params: any): WaterlinePromise<instance>;
         findDocument(params: any): WaterlinePromise<instance>;
-        initialize(params: any): WaterlinePromise<instance>;
+        initialize(params: any): instance;
     }      
 
+    // these are the mothods that are used by sails models. eg. User.create(params)
       declare interface BaseModelMethods <instance> {
         create(params: any): QueryBuilder<instance>;
         createEdge(params: any, vertices: any): QueryBuilder<instance>;
@@ -134,7 +171,7 @@ module.exports = {
         const model = models[key];
         const collectionName = `${model.globalId}`.toLowerCase();
         collections = `${collections}
-        ${collectionName}: dbVertextCollection;`;
+        ${collectionName}: ArangoDB.Collection;`;
       }
       return collections;
     }
@@ -142,7 +179,6 @@ module.exports = {
     let dbCollections = `
       declare interface db extends dbCollections {
           ${renderCollections()}
-          _query: 
       };
       
       declare const db: db;
@@ -159,19 +195,46 @@ module.exports = {
       // Declare model types for ${globalId}
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+      //MODELOBJECTS
+
+
+      interface ${globalId}KeyProps extends BaseKeyProps {
+        [key: string]: any;
+      }
+
+     
+      // THESE ARE FOR WATERLINE MODELS
+      declare let ${globalId}: BaseModelMethods<${globalId}.ObjectInstance>;
+      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}.ObjectInstance>;
+
+
+      //We can override the below.
+      // DBOBJECTS
       interface ${globalId}ObjectInstance extends BaseObjectInstance {
         [key: string]: any;
+        getKeyProps(): ${globalId}KeyProps;
+        keyProps: ${globalId}KeyProps;
       }
 
       interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance> {
         [key: string]: any;
       }
 
-      declare const ${globalId}: BaseModelMethods<${globalId}ObjectInstance>;
-      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}ObjectInstance>;
+      //We can override the below.
+      // DBO
+     
+     interface ${globalId}DboInstance extends BaseDboInstance {
+        // [key: string]: any;
+        keyProps: ${globalId}KeyProps;
+        getKeyProps(): ${globalId}KeyProps;
+      }
 
-      declare const ${globalId}Object: ${globalId}Object;
+      interface ${globalId}Dbo extends BaseDbo<${globalId}DboInstance> {
+        [key: string]: any;
+      }
 
+      declare let ${globalId}Object: ${globalId}Object;
+      declare let ${globalId}Dbo: ${globalId}Dbo;
      
       // End Declarations for ${globalId}
       
