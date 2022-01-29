@@ -57,11 +57,17 @@ module.exports = {
         trx: any;
       }
 
+      type PartialInstance<T> = {
+        [K in keyof T]?: T[K];
+      }
+
+
+
       declare interface BaseObjectInstance extends BaseVertex {
-        update(params: any, options:ObjectUpdateOtions): Promise<void>;
+        update(params: PartialInstance<this>, options:ObjectUpdateOtions): Promise<void>;
         destroy (params: any, options: ObjectUpdateOtions): Promise<void>;
         saveToCache: () => void;
-        getDocument: (params: any) => Promise<BaseObjectInstance>;
+        getDocument: (params: PartialInstance<this>) => Promise<this>;
         nextId: (name: string) => Promise<number>;
         onDelete: () => Promise<void>;
         onCreate: () => Promise<void>;
@@ -69,7 +75,7 @@ module.exports = {
         onGetOne: () => Promise<void>;
         onCreateOrUpdate: () => Promise<void>;
         afterInitialize: () => void;
-        reInitialize(params: any): void; 
+        reInitialize(params: PartialInstance<this>): void; 
         pkColumnName: string;
         schema: any;
         cache: boolean;
@@ -92,9 +98,9 @@ module.exports = {
       }
 
       declare interface BaseDboInstance extends BaseVertex {
-        update(params: any, options?: UpdateOptions): void;
+        update(params: PartialInstance<this>, options?: UpdateOptions): void;
         afterInitialize: () => void;
-        reInitialize(params: any): void; 
+        reInitialize(params: PartialInstance<this>): void; 
         globalId: string;
         instanceName: string;
         modelDefaults: any;
@@ -103,13 +109,14 @@ module.exports = {
       // These are the methods of an Object constructor eg. UserDbo.findOne({id})
       declare interface BaseDbo <instance> {
         getSchema: () => any;
-        create(params: any): instance;
-        create(from: any, to: any, params: any): instance;
-        getDocument(params: any): instance;
-        findOne(params: any): instance;
-        firstExample(params: any): instance;
+        create(params: PartialInstance<instance>): instance;
+        create(from: any, to: any, params: PartialInstance<instance>): instance;
+        getDocument(params: PartialInstance<instance>): instance;
+        findOne(params: PartialInstance<instance>): instance;
+        firstExample(params: PartialInstance<instance>): instance;
         find(params: any): ArangoDB.Cursor;
-        initialize(params: any): instance;
+        initialize(params: PartialInstance<instance>): instance;
+        extractKeyProps(params: PartialInstance<instance>): instance.keyProps;
     }  
 
       //End DBO BASE DECLARATIONS
@@ -124,7 +131,7 @@ module.exports = {
         skip(num: number): QueryBuilder<T>;
         sort(criteria: string): QueryBuilder<T>;
         meta(params: any): QueryBuilder<T>;
-        set(params: any): QueryBuilder<T>;
+        set(params: PartialInstance<T>): QueryBuilder<T>;
         paginate(pagination?: { page: number, limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
         populate(association: string, filter: any): QueryBuilder<T>;
@@ -132,22 +139,23 @@ module.exports = {
 
     // These are the methods of an Object constructor eg. UserObject.findOne({id})
       declare interface BaseObject <instance> {
-        create(params: any): WaterlinePromise<instance>;
-        getDocument(params: any): WaterlinePromise<instance>;
-        getOne(params: any): WaterlinePromise<instance>;
+        create(params: PartialInstance<instance>): WaterlinePromise<instance>;
+        getDocument(params: PartialInstance<instance>): WaterlinePromise<instance>;
+        getOne(params: PartialInstance<instance>): WaterlinePromise<instance>;
         findOne(params: any): WaterlinePromise<instance>;
         findDocument(params: any): WaterlinePromise<instance>;
-        initialize(params: any): instance;
+        initialize(params: instance): instance;
     }      
 
     // these are the mothods that are used by sails models. eg. User.create(params)
+
       declare interface BaseModelMethods <instance> {
-        create(params: any): QueryBuilder<instance>;
-        createEdge(params: any, vertices: any): QueryBuilder<instance>;
-        createEach(params: any): QueryBuilder<instance[]>;
+        create(params: Partial<instance>): QueryBuilder<instance>;
+        createEdge(params: PartialInstance<instance>, vertices: any): QueryBuilder<instance>;
+        createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
         findOne(params: any): QueryBuilder<instance>;
-        updateOne(params: any): QueryBuilder<instance>;
-        updateOne(criteria: any, params:any): QueryBuilder<instance>;
+        updateOne(params: PartialInstance<instance>): QueryBuilder<instance>;
+        updateOne(criteria: any, params:PartialInstance<instance>): QueryBuilder<instance>;
         find(params: any): QueryBuilder<instance[]>;
         destroy(params: any): QueryBuilder<instance[]>;
         sample(params: any): QueryBuilder<instance[]>;
@@ -159,6 +167,14 @@ module.exports = {
         findWithCount(params: any): QueryBuilder<FindWithCountResults>;
         upsert(params: any): QueryBuilder<instance[]>;
       }
+
+
+      function getDocumentAsync<instance>(params: any): WaterlinePromise<instance>;
+      function getDocument<instance>(params: any): instance;
+
+      declare const SystemSettings: {
+        [key: string]: any;
+      };
       `;
 
     return baseVertex;
