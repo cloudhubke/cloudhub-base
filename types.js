@@ -2,6 +2,89 @@ module.exports = {
   baseDeclarations: function () {
     const baseVertex = `
 
+    //MODEL DEFINITION
+
+      //     interface AspirantKeyProps extends BaseKeyProps {
+      //   AspirantName: string;
+      //   AspirantNo: string;
+      //   ElectoralPost: string;
+      // }
+
+      // interface modelIndex {
+      //   fields: string[];
+      //   unique?: boolean;
+      // }
+
+      // interface attributeObjectProperty {
+      //   // eslint-disable-next-line no-use-before-define
+      //   [key: string]: keyProperty;
+      // }
+
+      // interface keyProperty {
+      //   type: string;
+      //   properties?: attributeObjectProperty;
+      //   required?: boolean | string[];
+      //   minimum?: number;
+      //   maximum?: number;
+      //   minLength?: number;
+      //   maxLength?: number;
+      //   pattern?: string;
+      //   enum?: any[];
+      //   [key: string]: any;
+      // }
+
+      // interface additionalProperty {
+      //   type: string;
+      //   properties?: attributeObjectProperty;
+      //   required?: boolean | string[];
+      //   additionalProperties?: additionalProperty;
+      //   minimum?: number;
+      //   maximum?: number;
+      //   minLength?: number;
+      //   maxLength?: number;
+      //   pattern?: string;
+      //   enum?: any[];
+      //   [key: string]: any;
+      // }
+
+      // interface attributeProperty {
+      //   [key: string]: keyProperty;
+      // }
+
+      // interface attributeRules {
+      //   linkCollections?: string[];
+      //   validateLinks?: boolean;
+      //   properties: attributeProperty;
+      //   required?: boolean | string[];
+      //   additionalProperties?: additionalProperty;
+      // }
+
+      // interface modelAttribute {
+      //   type: string;
+      //   required?: boolean;
+      //   isIn?: any[];
+      //   rules?: attributeRules;
+      //   defaultsTo?: any;
+      //   key?: any;
+      // }
+
+      // interface ModelDefinition {
+      //   tenantType?: string[];
+      //   keyProps?: string[];
+      //   indexes?: modelIndex[];
+      //   // eslint-disable-next-line no-use-before-define
+      //   attributes: modelAttribute;
+      //   customToJSON?: () => void;
+      //   beforeCreate?: (recordToCreate: any, proceed: () => void) => void;
+      //   afterCreate?: (newlyCreatedRecord: any, proceed: () => void) => void;
+      //   beforeUpdate?: (valuesToSet: any, proceed: () => void) => void;
+      //   afterUpdate?: (updatedRecord: any, proceed: () => void) => void;
+      //   beforeDestroy?: (criteria: any, proceed: () => void) => void;
+      //   afterDestroy?: (destroyedRecord: any, proceed: () => void) => void;
+      // }
+
+    // END MODEL DEFINITION
+
       declare interface BaseVertex {
         id: string;
         _id: string;
@@ -213,6 +296,8 @@ module.exports = {
 
       //MODELOBJECTS
 
+      type ${globalId}Attributes = typeof ${globalId}Definition.attributes;
+      
 
       interface ${globalId}KeyProps extends BaseKeyProps {
         [key: string]: any;
@@ -233,6 +318,9 @@ module.exports = {
       }
 
       interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance> {
+        globalId: '${globalId}';
+        tableName: '${`${globalId}`.toLowerCase()}';
+        classType: 'Vertex';
         [key: string]: any;
       }
 
@@ -246,11 +334,14 @@ module.exports = {
       }
 
       interface ${globalId}Dbo extends BaseDbo<${globalId}DboInstance> {
+        globalId: '${globalId}';
+        tableName: '${`${globalId}`.toLowerCase()}';
+        classType: 'Vertex';
         [key: string]: any;
       }
 
-      declare let ${globalId}Object: ${globalId}Object;
-      declare let ${globalId}Dbo: ${globalId}Dbo;
+      let ${globalId}Object: ${globalId}Object;
+      let ${globalId}Dbo: ${globalId}Dbo;
      
       // End Declarations for ${globalId}
       

@@ -12,6 +12,65 @@ let modelTypes = "";
 
 let dbCollections = "";
 
+function ensureTypesFolderExists(path, mask, cb) {
+  if (typeof mask == "function") {
+    // Allow the `mask` parameter to be optional
+    cb = mask;
+    mask = 0o744;
+  }
+  fs.mkdir(path, mask, function (err) {
+    if (err) {
+      if (err.code == "EEXIST") cb(null);
+      // Ignore the error if the folder already exists
+      else cb(err); // Something else went wrong
+    } else cb(null); // Successfully created folder
+  });
+}
+
+function ensureTsConfigExists() {
+  try {
+    if (fs.existsSync(`${rootDir}/tsconfig.json`)) {
+      //file exists
+    } else {
+      fs.writeFile(
+        `${rootDir}/tsconfig.json`,
+        `{
+        "compilerOptions": {
+          "allowJs": true,
+          "target": "ESNext",
+          "module": "commonjs",
+          "rootDir": "./",
+          "outDir": "./.build",
+          "baseUrl": "./",
+          "esModuleInterop": true,
+          "lib": ["DOM", "ESNext"],
+          "resolveJsonModule": true,
+          "skipLibCheck": true,
+          "strict": true,
+          "typeRoots": ["types", "node_modules/@types"],
+          "paths": {
+            "*": ["types/*.d.ts"]
+          }
+        },
+        "include": ["**/*", "app.ts"],
+        "exclude": ["node_modules", ".build", "**/*.json"]
+      }
+      `,
+        function (err) {
+          if (err) {
+            return console.log(err);
+          }
+        }
+      );
+    }
+  } catch (err) {
+    // nothing to do
+  }
+}
+
+ensureTypesFolderExists(`${rootDir}/types`, () => null);
+ensureTsConfigExists();
+
 includeFiles.getDictionary(
   {
     dirname: `${rootDir}/api/models`,
