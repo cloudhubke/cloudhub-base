@@ -122,7 +122,6 @@ module.exports = {
         params: any;
       }
       
-      declare const dbConnection: ArangoDB.Database;
 
       interface dbCollections extends ArangoDB.Database {
         [key: string]: ArangoDB.Collection;
@@ -135,8 +134,6 @@ module.exports = {
       interface dbEdgeCollection extends BaseEdge {
         [key: string]: any;
       }
-      
-      declare function Transaction(params: TransactionParams): Promise<any>;
 
       // An instance of an Object. Eg UserObject.
 
@@ -167,6 +164,8 @@ module.exports = {
         reInitialize(params: PartialInstance<this>): void; 
         pkColumnName: string;
         schema: any;
+        merchantcode: string;
+        tenantcode: string;
         cache: boolean;
         globalId: string;
         classType: string;

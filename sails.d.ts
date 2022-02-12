@@ -67,13 +67,31 @@ declare namespace winston {
 }
 
 interface ManagerInstance {
-  dbConnection: any;
-  dsName: any;
+  dbConnection: ArangoDB.Database;
+  dsName: string;
   createDatabase: (params: {
     rootPassword: string | undefined;
     dbName: string;
   }) => Promise<void>;
   Transaction(params: TransactionParams): Promise<any>;
+  graphEnabled: boolean;
+  graph: any;
+  graphCollections: Array<string>;
+  collections: Array<string>;
+  globalIds: Array<string>;
+  graphName: string;
+  aql: any;
+  SystemSettings: any;
+  getSystemSettings(): any;
+  updateSystemSettings(params: any): void;
+  cleanDatastore(): Promise<void>;
+  dsName: string;
+  tenantType: string;
+  url: string;
+  config: any;
+  vertices: Array<any>;
+  bearerToken: string;
+  edges: Array<any>;
 }
 
 interface DataStoreInstance {

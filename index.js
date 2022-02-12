@@ -27,6 +27,10 @@ function ensureTypesFolderExists(path, mask, cb) {
   });
 }
 
+console.log("====================================");
+console.log("run");
+console.log("====================================");
+
 function ensureSailsDts() {
   try {
     if (fs.existsSync(`${rootDir}/types/sails.d.ts`)) {
