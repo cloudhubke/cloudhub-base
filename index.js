@@ -27,6 +27,26 @@ function ensureTypesFolderExists(path, mask, cb) {
   });
 }
 
+function ensureSailsDts() {
+  try {
+    if (fs.existsSync(`${rootDir}/types/sails.d.ts`)) {
+      //file exists
+    } else {
+      const { exec } = require("child_process");
+      exec(
+        `cp ${__dirname}/sails.d.ts ${rootDir}/types/sails.d.ts`,
+        (err, stdout, stderr) => {
+          if (err) {
+            console.log(`Could not create sails.d.ts file`);
+          }
+        }
+      );
+    }
+  } catch (err) {
+    // nothing to do
+  }
+}
+
 function ensureTsConfigExists() {
   try {
     if (fs.existsSync(`${rootDir}/tsconfig.json`)) {
@@ -53,7 +73,20 @@ function ensureTsConfigExists() {
           }
         },
         "include": ["**/*", "app.ts"],
-        "exclude": ["node_modules", ".build", "**/*.json"]
+        "exclude": ["node_modules", ".build", "**/*.json"],
+        "ts-node": {
+          // It is faster to skip typechecking.
+          // Remove if you want ts-node to do typechecking.
+          "transpileOnly": false,
+      
+          "files": true,
+      
+          "compilerOptions": {
+            // compilerOptions specified here will override those declared below,
+            // but *only* in ts-node.  Useful if you want ts-node and tsc to use
+            // different options with a single tsconfig.json.
+          }
+        }
       }
       `,
         function (err) {
@@ -70,6 +103,7 @@ function ensureTsConfigExists() {
 
 ensureTypesFolderExists(`${rootDir}/types`, () => null);
 ensureTsConfigExists();
+ensureSailsDts();
 
 includeFiles.getDictionary(
   {
@@ -133,6 +167,7 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 8,
+    project: ["tsconfig.json"],
   },
   globals: {
     sails: true,
@@ -180,5 +215,11 @@ module.exports = {
     "func-names": ["error", "as-needed"],
     "guard-for-in": "off",
     radix: [0],
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "no-multi-assign": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-floating-promises": 2,
+    "@typescript-eslint/no-var-requires": "off",
   },
 };

@@ -54,7 +54,7 @@ module.exports = {
       // interface attributeRules {
       //   linkCollections?: string[];
       //   validateLinks?: boolean;
-      //   properties: attributeProperty;
+      //   properties?: attributeProperty;
       //   required?: boolean | string[];
       //   additionalProperties?: additionalProperty;
       // }
@@ -62,18 +62,24 @@ module.exports = {
       // interface modelAttribute {
       //   type: string;
       //   required?: boolean;
+      //   unique?: boolean;
       //   isIn?: any[];
       //   rules?: attributeRules;
       //   defaultsTo?: any;
       //   key?: any;
       // }
 
+      // interface modelAttributes {
+      //   [key: string]: modelAttribute;
+      // }
+
       // interface ModelDefinition {
       //   tenantType?: string[];
       //   keyProps?: string[];
+      //   cache?: boolean;
       //   indexes?: modelIndex[];
       //   // eslint-disable-next-line no-use-before-define
-      //   attributes: modelAttribute;
+      //   attributes: modelAttributes;
       //   customToJSON?: () => void;
       //   beforeCreate?: (recordToCreate: any, proceed: () => void) => void;
       //   afterCreate?: (newlyCreatedRecord: any, proceed: () => void) => void;
@@ -111,7 +117,7 @@ module.exports = {
       }
 
       declare interface TransactionParams {
-        action(): any;
+        action(params?:any): any;
         writes: Array<string>;
         params: any;
       }
@@ -147,7 +153,7 @@ module.exports = {
 
 
       declare interface BaseObjectInstance extends BaseVertex {
-        update(params: PartialInstance<this>, options:ObjectUpdateOtions): Promise<void>;
+        update(params: PartialInstance<this>, options?:ObjectUpdateOtions): Promise<void>;
         destroy (params: any, options: ObjectUpdateOtions): Promise<void>;
         saveToCache: () => void;
         getDocument: (params: PartialInstance<this>) => Promise<this>;
@@ -164,8 +170,8 @@ module.exports = {
         cache: boolean;
         globalId: string;
         classType: string;
-        _Transaction: Transaction;
-        _dbConnection: any;
+        _Transaction(params: TransactionParams):  Promise<any>;
+        _dbConnection: ArangoDB.Database;
       }
   
       declare interface BaseEdgeObjectInstance extends BaseObjectInstance, BaseEdge {
@@ -218,16 +224,23 @@ module.exports = {
         paginate(pagination?: { page: number, limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
         populate(association: string, filter: any): QueryBuilder<T>;
+        fetch(): QueryBuilder<T>;
     }
 
     // These are the methods of an Object constructor eg. UserObject.findOne({id})
       declare interface BaseObject <instance> {
-        create(params: PartialInstance<instance>): WaterlinePromise<instance>;
-        getDocument(params: PartialInstance<instance>): WaterlinePromise<instance>;
-        getOne(params: PartialInstance<instance>): WaterlinePromise<instance>;
-        findOne(params: any): WaterlinePromise<instance>;
-        findDocument(params: any): WaterlinePromise<instance>;
-        initialize(params: instance): instance;
+        create(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
+        getDocument(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
+        getOne(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
+        findOne(params: any, merchantcode?:string): WaterlinePromise<instance>;
+        findDocument(params: any, merchantcode?:string): WaterlinePromise<instance>;
+
+
+        /**
+         * initialize a new instance of the model object with the given properties and methods
+         */
+        initialize(params: instance, merchantcode?:string, initOne?:boolean): instance;
+
     }      
 
     // these are the mothods that are used by sails models. eg. User.create(params)
@@ -241,7 +254,7 @@ module.exports = {
         updateOne(criteria: any, params:PartialInstance<instance>): QueryBuilder<instance>;
         find(params: any): QueryBuilder<instance[]>;
         destroy(params: any): QueryBuilder<instance[]>;
-        sample(params: any): QueryBuilder<instance[]>;
+        sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
         count(params: any): WaterlinePromise<number>;
         avg(params: any): WaterlinePromise<number>;
@@ -249,10 +262,11 @@ module.exports = {
         let(params: any): QueryBuilder<any>;
         findWithCount(params: any): QueryBuilder<FindWithCountResults>;
         upsert(params: any): QueryBuilder<instance[]>;
+        normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
       }
 
 
-      function getDocumentAsync<instance>(params: any): WaterlinePromise<instance>;
+      function getDocumentAsync<instance>(params: any, merchantcode?:string): WaterlinePromise<instance>;
       function getDocument<instance>(params: any): instance;
 
       declare const SystemSettings: {
@@ -296,19 +310,13 @@ module.exports = {
 
       //MODELOBJECTS
 
-      type ${globalId}Attributes = typeof ${globalId}Definition.attributes;
+      type ${globalId}Attributes = typeof ${globalId}Model.attributes;
       
-
       interface ${globalId}KeyProps extends BaseKeyProps {
         [key: string]: any;
       }
 
      
-      // THESE ARE FOR WATERLINE MODELS
-      declare let ${globalId}: BaseModelMethods<${globalId}.ObjectInstance>;
-      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}.ObjectInstance>;
-
-
       //We can override the below.
       // DBOBJECTS
       interface ${globalId}ObjectInstance extends BaseObjectInstance {
@@ -317,10 +325,16 @@ module.exports = {
         keyProps: ${globalId}KeyProps;
       }
 
+      // THESE ARE FOR WATERLINE MODELS
+      declare let ${globalId}: BaseModelMethods<${globalId}ObjectInstance>;
+      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}ObjectInstance>;
+
+
       interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance> {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
+        prototype: ${globalId}ObjectInstance;
         [key: string]: any;
       }
 
@@ -337,11 +351,15 @@ module.exports = {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
+        prototype: ${globalId}DboInstance;
         [key: string]: any;
       }
 
+
       let ${globalId}Object: ${globalId}Object;
       let ${globalId}Dbo: ${globalId}Dbo;
+
+
      
       // End Declarations for ${globalId}
       
