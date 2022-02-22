@@ -91,6 +91,8 @@ module.exports = {
 
     // END MODEL DEFINITION
 
+      type Database = import('arangojs/database').Database;
+
       declare interface BaseVertex {
         id: string;
         _id: string;
@@ -138,22 +140,21 @@ module.exports = {
       // An instance of an Object. Eg UserObject.
 
       interface ObjectUpdateOtions {
-        keepNull: boolean;
-        mergeObjects: boolean;
-        trx: any;
+        keepNull?: boolean;
+        mergeObjects?: boolean;
+        trx?: any;
       }
 
       type PartialInstance<T> = {
         [K in keyof T]?: T[K];
       }
 
-
-
       declare interface BaseObjectInstance extends BaseVertex {
-        update(params: PartialInstance<this>, options?:ObjectUpdateOtions): Promise<void>;
+        update(params: PartialInstance<this>, trx?:import('arangojs/transaction').Transaction, options?:ObjectUpdateOtions): Promise<void>;
         destroy (params: any, options: ObjectUpdateOtions): Promise<void>;
         saveToCache: () => void;
-        getDocument: (params: PartialInstance<this>) => Promise<this>;
+        getDocument: (params: PartialInstance<any>) => Promise<any>;
+        getDocumentAsync: (params: PartialInstance<any>) => Promise<any>;
         nextId: (name: string) => Promise<number>;
         onDelete: () => Promise<void>;
         onCreate: () => Promise<void>;
@@ -170,7 +171,7 @@ module.exports = {
         globalId: string;
         classType: string;
         _Transaction(params: TransactionParams):  Promise<any>;
-        _dbConnection: ArangoDB.Database;
+        _dbConnection: Database;
       }
   
       declare interface BaseEdgeObjectInstance extends BaseObjectInstance, BaseEdge {
@@ -220,6 +221,7 @@ module.exports = {
         sort(criteria: string): QueryBuilder<T>;
         meta(params: any): QueryBuilder<T>;
         set(params: PartialInstance<T>): QueryBuilder<T>;
+        select(params: string[]): QueryBuilder<T>;
         paginate(pagination?: { page: number, limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
         populate(association: string, filter: any): QueryBuilder<T>;
@@ -309,17 +311,18 @@ module.exports = {
 
       //MODELOBJECTS
 
-      type ${globalId}Attributes = typeof ${globalId}Model.attributes;
+
+      interface ${globalId}Props extends BaseVertex {
+        [key: string]: any;
+      }
       
       interface ${globalId}KeyProps extends BaseKeyProps {
-        [key: string]: any;
       }
 
      
       //We can override the below.
       // DBOBJECTS
-      interface ${globalId}ObjectInstance extends BaseObjectInstance {
-        [key: string]: any;
+      interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props {
         getKeyProps(): ${globalId}KeyProps;
         keyProps: ${globalId}KeyProps;
       }
@@ -340,7 +343,7 @@ module.exports = {
       //We can override the below.
       // DBO
      
-     interface ${globalId}DboInstance extends BaseDboInstance {
+     interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
         // [key: string]: any;
         keyProps: ${globalId}KeyProps;
         getKeyProps(): ${globalId}KeyProps;

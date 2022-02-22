@@ -77,7 +77,7 @@ function ensureTsConfigExists() {
           }
         },
         "include": ["**/*", "app.ts"],
-        "exclude": ["node_modules", "build', ".build", "**/*.json"],
+        "exclude": ["node_modules", "build", ".build", "**/*.json"],
         "ts-node": {
           // It is faster to skip typechecking.
           // Remove if you want ts-node to do typechecking.

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+
 declare namespace Upstream {
   interface UpstreamFile {
     fd: any;
@@ -66,39 +67,40 @@ declare namespace winston {
   }
 }
 
-interface ManagerInstance {
-  dbConnection: ArangoDB.Database;
-  dsName: string;
-  createDatabase: (params: {
-    rootPassword: string | undefined;
-    dbName: string;
-  }) => Promise<void>;
-  Transaction(params: TransactionParams): Promise<any>;
-  graphEnabled: boolean;
-  graph: any;
-  graphCollections: Array<string>;
-  collections: Array<string>;
-  globalIds: Array<string>;
-  graphName: string;
-  aql: any;
-  SystemSettings: any;
-  getSystemSettings(): any;
-  updateSystemSettings(params: any): void;
-  cleanDatastore(): Promise<void>;
-  dsName: string;
-  tenantType: string;
-  url: string;
-  config: any;
-  vertices: Array<any>;
-  bearerToken: string;
-  edges: Array<any>;
-}
-
-interface DataStoreInstance {
-  manager: ManagerInstance;
-}
-
 declare namespace Sails {
+  type Database = import("arangojs/database").Database;
+
+  interface ManagerInstance {
+    dbConnection: Database;
+    dsName: string;
+    createDatabase: (params: {
+      rootPassword: string | undefined;
+      dbName: string;
+    }) => Promise<void>;
+    Transaction(params: TransactionParams): Promise<any>;
+    graphEnabled: boolean;
+    graph: any;
+    graphCollections: Array<string>;
+    collections: Array<string>;
+    globalIds: Array<string>;
+    graphName: string;
+    aql: any;
+    SystemSettings: any;
+    getSystemSettings(): any;
+    updateSystemSettings(params: any): void;
+    cleanDatastore(): Promise<void>;
+    tenantType: string;
+    url: string;
+    config: any;
+    vertices: Array<any>;
+    bearerToken: string;
+    edges: Array<any>;
+  }
+
+  interface DataStoreInstance {
+    manager: ManagerInstance;
+  }
+
   interface Dictionary<T> {
     [k: string]: T;
   }
@@ -326,7 +328,7 @@ declare namespace Sails {
     allowHalfOpen: boolean;
     method: string;
     url: string;
-    headers: Dictionary<string>;
+    headers: Dictionary<any>;
     rawHeaders: string[];
     params: any;
     query: Dictionary<string>;
