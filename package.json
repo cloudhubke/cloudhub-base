@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-cloudhub-base",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -20,7 +20,7 @@
     "zustand": "^3.6.9"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0",
+    "eslint": "^8.2.0",
     "typescript": "^4.5.5"
   },
   "scripts": {
