@@ -99,7 +99,6 @@ module.exports = {
         _key: string;
         createdAt: number,
         updatedAt: number,
-        [key: string]: any;
       }
 
       declare interface BaseEdge extends BaseVertex{
@@ -188,6 +187,7 @@ module.exports = {
 
       declare interface BaseDboInstance extends BaseVertex {
         update(params: PartialInstance<this>, options?: UpdateOptions): void;
+        onGetOne: () => void;
         afterInitialize: () => void;
         reInitialize(params: PartialInstance<this>): void; 
         globalId: string;
@@ -251,6 +251,7 @@ module.exports = {
         createEdge(params: PartialInstance<instance>, vertices: any): QueryBuilder<instance>;
         createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
         findOne(params: any): QueryBuilder<instance>;
+        findDocument(params: any): QueryBuilder<instance>;
         updateOne(params: PartialInstance<instance>): QueryBuilder<instance>;
         updateOne(criteria: any, params:PartialInstance<instance>): QueryBuilder<instance>;
         find(params: any): QueryBuilder<instance[]>;
@@ -313,7 +314,7 @@ module.exports = {
 
 
       interface ${globalId}Props extends BaseVertex {
-        [key: string]: any;
+        // [key: string]: any;
       }
       
       interface ${globalId}KeyProps extends BaseKeyProps {
@@ -345,6 +346,8 @@ module.exports = {
      
      interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
         // [key: string]: any;
+        globalId: '${globalId}';
+        tableName: '${`${globalId}`.toLowerCase()}';
         keyProps: ${globalId}KeyProps;
         getKeyProps(): ${globalId}KeyProps;
       }
