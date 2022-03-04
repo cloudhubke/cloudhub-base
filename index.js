@@ -160,7 +160,11 @@ module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  extends: [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+  ],
   parserOptions: {
     ecmaVersion: 8,
     project: ["tsconfig.json"],
@@ -185,6 +189,7 @@ module.exports = {
   rules: {
     "no-underscore-dangle": "off",
     "no-await-in-loop": "off",
+    "import/no-cycle": 0,
     quotes: "off",
     "no-use-before-define": ["error", { functions: false, classes: true }],
     "no-global-assign": "error",
