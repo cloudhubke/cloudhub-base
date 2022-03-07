@@ -2,6 +2,8 @@ module.exports = {
   baseDeclarations: function () {
     const baseVertex = `
 
+    /* eslint-disable @typescript-eslint/no-empty-interface */
+    
     //MODEL DEFINITION
 
       //     interface AspirantKeyProps extends BaseKeyProps {
@@ -148,9 +150,67 @@ module.exports = {
         [K in keyof T]?: T[K];
       }
 
+      type ObjectKey = ${"`${string}.${string}`;"}
+
+     
+      interface ModelFindCriteria {
+        $gt?: number;
+        $gte?: number;
+        $lt?: number;
+        $lte?: number;
+        $ne?: number;
+        $like?: string;
+        $notlike?: string;
+        $in?: number[] | string[];
+        in?: number[] | string[];
+        $allin?: number[] | string[];
+        $anyin?: number[] | string[];
+        $has?: string;
+        $nothas?: string;
+        $nin?: number[] | string[];
+      }
+
+      interface ModelUpdateCriteria {
+        $inc?: number;
+        $pop?: boolean;
+        $shift?: boolean;
+        $unshift?: any;
+        $unshiftset?: any;
+        $push?: any;
+        $pushset?: any;
+        $pull?: any[];
+      }
+
+      type ModelFindParams<T> = {   
+        [K in keyof T]?: T[K] | ModelFindCriteria;
+      };
+
+      interface OtherModelFindParams {
+        $or?: any[];
+        $and?: any[];
+        [key: ObjectKey]: any;
+      }
+
+      type ModelUpdateParams<T> = {
+        [K in keyof T]?: T[K] | ModelUpdateCriteria;
+      };
+      
+
+      interface FindObjectParams<T> {
+        where: ModelFindParams<T>;
+        skip?: number;
+        limit?: number;
+        sort?: string;
+        select?: string[] | string;
+      }
+
       declare interface BaseObjectInstance extends BaseVertex {
-        update(params: PartialInstance<this>, trx?:import('arangojs/transaction').Transaction, options?:ObjectUpdateOtions): Promise<void>;
-        destroy (params: any, options: ObjectUpdateOtions): Promise<void>;
+        update(
+          params: ModelUpdateParams<this>,
+          trx?: import('arangojs/transaction').Transaction,
+          options?: ObjectUpdateOtions,
+        ): Promise<void>;
+        destroy(params: any, options: ObjectUpdateOtions): Promise<void>;
         saveToCache: () => void;
         getDocument: (params: PartialInstance<any>) => Promise<any>;
         getDocumentAsync: (params: PartialInstance<any>) => Promise<any>;
@@ -161,7 +221,7 @@ module.exports = {
         onGetOne: () => Promise<void>;
         onCreateOrUpdate: () => Promise<void>;
         afterInitialize: () => void;
-        reInitialize(params: PartialInstance<this>): void; 
+        reInitialize(params: PartialInstance<this>): void;
         pkColumnName: string;
         schema: any;
         merchantcode: string;
@@ -169,7 +229,7 @@ module.exports = {
         cache: boolean;
         globalId: string;
         classType: string;
-        _Transaction(params: TransactionParams):  Promise<any>;
+        _Transaction(params: TransactionParams): Promise<any>;
         _dbConnection: Database;
       }
   
@@ -220,9 +280,9 @@ module.exports = {
         skip(num: number): QueryBuilder<T>;
         sort(criteria: string): QueryBuilder<T>;
         meta(params: any): QueryBuilder<T>;
-        set(params: PartialInstance<T>): QueryBuilder<T>;
+        set(params: ModelUpdateParams<T>): QueryBuilder<T>;
         select(params: string[]): QueryBuilder<T>;
-        paginate(pagination?: { page: number, limit: number }): QueryBuilder<T>;
+        paginate(pagination?: { page: number; limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
         populate(association: string, filter: any): QueryBuilder<T>;
         fetch(): QueryBuilder<T>;
@@ -248,22 +308,40 @@ module.exports = {
 
       declare interface BaseModelMethods <instance> {
         create(params: Partial<instance>): QueryBuilder<instance>;
-        createEdge(params: PartialInstance<instance>, vertices: any): QueryBuilder<instance>;
+        createEdge(
+          params: PartialInstance<instance>,
+          vertices: any,
+        ): QueryBuilder<instance>;
         createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
-        findOne(params: any): QueryBuilder<instance>;
-        findDocument(params: any): QueryBuilder<instance>;
-        updateOne(params: PartialInstance<instance>): QueryBuilder<instance>;
-        updateOne(criteria: any, params:PartialInstance<instance>): QueryBuilder<instance>;
-        find(params: any): QueryBuilder<instance[]>;
-        destroy(params: any): QueryBuilder<instance[]>;
+        findOne(
+          params: string | ModelFindParams<instance> | OtherModelFindParams,
+        ): QueryBuilder<instance>;
+        findDocument(params: ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance>;
+        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance>;
+        updateOne(
+          criteria: string | ModelFindParams<instance> |  OtherModelFindParams,
+          params: ModelUpdateParams<instance>,
+        ): QueryBuilder<instance>;
+        find(
+          params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams,
+        ): QueryBuilder<instance[]>;
+        destroy(params: ModelFindParams<instance> |  OtherModelFindParams): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
-        count(params: any): WaterlinePromise<number>;
-        avg(params: any): WaterlinePromise<number>;
-        sum(params: any): WaterlinePromise<number>;
+        count(params: ModelFindParams<instance> | OtherModelFindParams): WaterlinePromise<number>;
+        avg(
+          attribute: string,
+          params: ModelFindParams<instance> | OtherModelFindParams,
+        ): WaterlinePromise<number>;
+        sum(
+          atrribute: string,
+          params: ModelFindParams<instance> | OtherModelFindParams,
+        ): WaterlinePromise<number>;
         let(params: any): QueryBuilder<any>;
-        findWithCount(params: any): QueryBuilder<FindWithCountResults>;
-        upsert(params: any): QueryBuilder<instance[]>;
+        findWithCount(
+          params: ModelFindParams<instance> | FindObjectParams<instance>,
+        ): QueryBuilder<FindWithCountResults>;
+        upsert( params: ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance[]>;
         normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
       }
 
