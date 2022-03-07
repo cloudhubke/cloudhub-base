@@ -253,6 +253,7 @@ module.exports = {
         globalId: string;
         instanceName: string;
         modelDefaults: any;
+        keyProps: BaseKeyProps;
       }
   
       // These are the methods of an Object constructor eg. UserDbo.findOne({id})
