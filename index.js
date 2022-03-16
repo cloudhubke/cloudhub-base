@@ -12,7 +12,7 @@ let modelTypes = "";
 
 let dbCollections = "";
 
-function ensureTypesFolderExists(path, mask, cb) {
+function ensureFolderExists(path, mask, cb) {
   if (typeof mask == "function") {
     // Allow the `mask` parameter to be optional
     cb = mask;
@@ -101,9 +101,56 @@ function ensureTsConfigExists() {
   }
 }
 
-ensureTypesFolderExists(`${rootDir}/types`, () => null);
+ensureFolderExists(`${rootDir}/api/modeloverrides`, () => null);
+ensureFolderExists(`${rootDir}/types`, () => null);
+
 ensureTsConfigExists();
 ensureSailsDts();
+
+includeFiles.getDictionary(
+  {
+    dirname: `${rootDir}/api/models/merchantadmin`,
+    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    replaceExpr: /^.*\//,
+  },
+  (err, models) => {
+    console.log("START--", models);
+    const folders = Object.keys(models);
+    for (const folder of folders) {
+      ensureFolderExists(`${rootDir}/api/modeloverrides/${folder}`, () => {
+        const collections = Object.keys(models[folder]).filter(
+          (t) => !["identity", "globalId"].includes(t)
+        );
+
+        for (const collection of collections) {
+          try {
+            if (
+              fs.existsSync(
+                `${rootDir}/api/modeloverrides/${folder}/${collection}.ts`
+              )
+            ) {
+              //file exists
+            } else {
+              fs.writeFile(
+                `${rootDir}/api/modeloverrides/${folder}/${collection}.ts`,
+                `module.exports = {
+                    tenantType:[],
+                    attributes: {},
+                };
+              `,
+                function (err) {
+                  // do nothing
+                }
+              );
+            }
+          } catch (err) {
+            // nothing to do
+          }
+        }
+      });
+    }
+  }
+);
 
 includeFiles.getDictionary(
   {
