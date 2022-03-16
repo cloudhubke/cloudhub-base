@@ -101,7 +101,10 @@ function ensureTsConfigExists() {
   }
 }
 
-ensureFolderExists(`${rootDir}/api/modeloverrides`, () => null);
+ensureFolderExists(`${rootDir}/api/modeloverrides`, () => {
+  ensureFolderExists(`${rootDir}/api/modeloverrides/admin`, () => null);
+  ensureFolderExists(`${rootDir}/api/modeloverrides/merchantadmin`, () => null);
+});
 ensureFolderExists(`${rootDir}/types`, () => null);
 
 ensureTsConfigExists();
@@ -114,40 +117,43 @@ includeFiles.getDictionary(
     replaceExpr: /^.*\//,
   },
   (err, models) => {
-    console.log("START--", models);
     const folders = Object.keys(models);
     for (const folder of folders) {
-      ensureFolderExists(`${rootDir}/api/modeloverrides/${folder}`, () => {
-        const collections = Object.keys(models[folder]).filter(
-          (t) => !["identity", "globalId"].includes(t)
-        );
+      ensureFolderExists(
+        `${rootDir}/api/modeloverrides/merchantadmin/${folder}`,
+        () => {
+          const collections = Object.keys(models[folder]).filter(
+            (t) => !["identity", "globalId"].includes(t)
+          );
 
-        for (const collection of collections) {
-          try {
-            if (
-              fs.existsSync(
-                `${rootDir}/api/modeloverrides/${folder}/${collection}.ts`
-              )
-            ) {
-              //file exists
-            } else {
-              fs.writeFile(
-                `${rootDir}/api/modeloverrides/${folder}/${collection}.ts`,
-                `module.exports = {
+          for (const collection of collections) {
+            try {
+              if (
+                fs.existsSync(
+                  `${rootDir}/api/modeloverrides/merchantadmin/${folder}/${collection}.ts`
+                )
+              ) {
+                //file exists
+              } else {
+                fs.writeFile(
+                  `${rootDir}/api/modeloverrides/merchantadmin/${folder}/${collection}.ts`,
+                  `module.exports = {
                     tenantType:[],
                     attributes: {},
+                    
                 };
               `,
-                function (err) {
-                  // do nothing
-                }
-              );
+                  function (err) {
+                    // do nothing
+                  }
+                );
+              }
+            } catch (err) {
+              // nothing to do
             }
-          } catch (err) {
-            // nothing to do
           }
         }
-      });
+      );
     }
   }
 );
