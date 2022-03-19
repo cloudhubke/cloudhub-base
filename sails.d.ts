@@ -268,6 +268,7 @@ declare namespace Sails {
     csrf: CsrfConfig;
     cache: CacheConfig;
     ssl: any;
+    datastores: any;
   }
 
   interface SailsHooks extends Dictionary<any> {
@@ -416,6 +417,7 @@ declare namespace Sails {
   // should be extended at app level to provide models and services
   // maybe controllers to?
   export interface SailsObject {
+    isLifted: boolean;
     config: SailsConfig;
     // will be implemented by used
     models: any;

@@ -262,9 +262,9 @@ module.exports = {
         create(params: PartialInstance<instance>): instance;
         create(from: any, to: any, params: PartialInstance<instance>): instance;
         getDocument(params: PartialInstance<instance>): instance;
-        findOne(params: PartialInstance<instance>): instance;
+        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams): instance;
         firstExample(params: PartialInstance<instance>): instance;
-        find(params: any): ArangoDB.Cursor;
+        find(params: string | ModelFindParams<instance> | OtherModelFindParams): ArangoDB.Cursor;
         initialize(params: PartialInstance<instance>): instance;
         extractKeyProps(params: PartialInstance<instance>): instance.keyProps;
     }  
@@ -344,6 +344,77 @@ module.exports = {
         ): QueryBuilder<FindWithCountResults>;
         upsert( params: ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance[]>;
         normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
+
+        /**
+         * perform aggregations on the model
+         * @param params
+         * 
+         * @example
+         * const summary = await _Receivedproduct(merchantcode).aggregate({
+         *  $filter: {
+         *    Timestamp: { $gt: dayjs().startOf('year').valueOf() },
+         *  },
+         * $let: {
+         *  length: {$length: '$group}
+         * },
+         *  $collect: {
+         *    ProductCode: 'Produce.ProductCode',
+         *    year: { $date_year: 'Timestamp' },
+         *    week: { $date_isoweek: 'Timestamp' },
+         *  },
+         * $withcountinto: 'length',
+         * intogroup: 'name',
+         *  $aggregate: {
+         *    Weight: { $sum: 'Produce.Weight' },
+         *  },
+         * 
+         *  $filter2: {
+         *    $Weight: { $gt: 0 },
+         *  },
+         * 
+         *  $sort: {
+         *    week: 'ASC',
+         *  },
+         * 
+         *  $return: {
+         *    Year: '$year',
+         *    Week: '$week',
+         *    WeekYear: { $concat: ['$week', '"-"', '$year'] },
+         *    ProductCode: '$ProductCode',
+         *    Weight: '$Weight',
+         *  },
+         * });
+         * 
+         */
+        aggregate: (params: {
+          $let?:{
+            [key: string]: any
+          };
+          $filter?: {
+            [key: string]: any;
+          };
+          $collect: {
+            [key: string]: string;
+          };
+          $intogroup?: string;
+          $withcountinto?: string;
+          $aggregate: {
+            [key: string]: {
+              $sum?: string;
+              [key: string]: string;
+            };
+          };
+          $filter2?: {
+            [key: string]: any;
+          };
+          $sort?: {
+            [key: string]: any;
+          };
+          $return: {
+            [key: string]: string;
+          };
+          [key: string]: any;
+        }) => WaterlinePromise<any>;
       }
 
 
