@@ -197,7 +197,7 @@ module.exports = {
       
 
       interface FindObjectParams<T> {
-        where: ModelFindParams<T>;
+        where: ModelFindParams<T> | OtherModelFindParams;
         skip?: number;
         limit?: number;
         sort?: string;
@@ -241,8 +241,8 @@ module.exports = {
       //DBO BASE DECLARATIONS
 
       interface UpdateOptions {
-        keepNull: boolean;
-        mergeObjects: boolean;
+        keepNull?: boolean;
+        mergeObjects?: boolean;
       }
 
       declare interface BaseDboInstance extends BaseVertex {
