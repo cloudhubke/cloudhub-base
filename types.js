@@ -323,9 +323,7 @@ module.exports = {
           criteria: string | ModelFindParams<instance> |  OtherModelFindParams,
           params: ModelUpdateParams<instance>,
         ): QueryBuilder<instance>;
-        find(
-          params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams,
-        ): QueryBuilder<instance[]>;
+        find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams): QueryBuilder<instance[]>;
         destroy(params: ModelFindParams<instance> |  OtherModelFindParams): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
