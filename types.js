@@ -287,7 +287,9 @@ module.exports = {
         skip(num: number): QueryBuilder<T>;
         sort(criteria: string): QueryBuilder<T>;
         meta(params: any): QueryBuilder<T>;
-        set(params: ModelUpdateParams<T>): QueryBuilder<T>;
+        set(params: ModelUpdateParams<T> | {
+          [key: string]: ModelUpdateCriteria;
+        }): QueryBuilder<T>;
         select(params: string[]): QueryBuilder<T>;
         paginate(pagination?: { page: number; limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
@@ -302,6 +304,14 @@ module.exports = {
         getOne(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
         findOne(params: any, merchantcode?:string): WaterlinePromise<instance>;
         findDocument(params: any, merchantcode?:string): WaterlinePromise<instance>;
+
+        modelOverrides: {
+          tenantType?: string[],
+          keyProps: string[],
+          indexes: any[],
+          attributes: any,
+          [key: string]: any
+        }
 
 
         /**
@@ -496,7 +506,6 @@ module.exports = {
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
         prototype: ${globalId}ObjectInstance;
-        [key: string]: any;
       }
 
       //We can override the below.
