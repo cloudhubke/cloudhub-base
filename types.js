@@ -151,6 +151,7 @@ module.exports = {
       }
 
       type ObjectKey = ${"`${string}.${string}`;"}
+      type QueryVariable = ${"`$${string}`;"}
 
      
       interface ModelFindCriteria {
@@ -185,23 +186,26 @@ module.exports = {
         [K in keyof T]?: T[K] | ModelFindCriteria;
       };
 
-      interface OtherModelFindParams {
-        $or?: any[];
-        $and?: any[];
+      interface OtherModelFindParams<T> {
+        $or?: Array<ModelFindParams<T>>;
+        $and?: Array<ModelFindParams<T>>;
         [key: ObjectKey]: any;
+        [key: QueryVariable]: any;
       }
+
 
       type ModelUpdateParams<T> = {
         [K in keyof T]?: T[K] | ModelUpdateCriteria;
       };
+
       
 
       interface FindObjectParams<T> {
-        where: ModelFindParams<T> | OtherModelFindParams;
+        where: ModelFindParams<T> | OtherModelFindParams<T>;
         skip?: number;
         limit?: number;
         sort?: string;
-        select?: string[] | string;
+        select?: string[] | string;  
       }
 
       declare interface BaseObjectInstance extends BaseVertex {
@@ -261,10 +265,12 @@ module.exports = {
         getSchema: () => any;
         create(params: PartialInstance<instance>): instance;
         create(from: any, to: any, params: PartialInstance<instance>): instance;
-        getDocument(params: PartialInstance<instance>): instance;
-        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams): instance;
+        getDocument(params: {
+          _id: string;
+        }): instance;
+        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance;
         firstExample(params: PartialInstance<instance>): instance;
-        find(params: string | ModelFindParams<instance> | OtherModelFindParams): ArangoDB.Cursor;
+        find(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): ArangoDB.Cursor;
         initialize(params: PartialInstance<instance>): instance;
         extractKeyProps(params: PartialInstance<instance>): instance.keyProps;
     }  
@@ -315,32 +321,32 @@ module.exports = {
         ): QueryBuilder<instance>;
         createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
         findOne(
-          params: string | ModelFindParams<instance> | OtherModelFindParams,
+          params: string | ModelFindParams<instance> | OtherModelFindParams<instance>,
         ): QueryBuilder<instance>;
-        findDocument(params: ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance>;
-        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance>;
+        findDocument(params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance>;
+        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance>;
         updateOne(
           criteria: string | ModelFindParams<instance> |  OtherModelFindParams,
           params: ModelUpdateParams<instance>,
         ): QueryBuilder<instance>;
-        find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams): QueryBuilder<instance[]>;
-        destroy(params: ModelFindParams<instance> |  OtherModelFindParams): QueryBuilder<instance[]>;
+        find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
+        destroy(params: ModelFindParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
-        count(params: ModelFindParams<instance> | OtherModelFindParams): WaterlinePromise<number>;
+        count(params: ModelFindParams<instance> | OtherModelFindParams<instance>): WaterlinePromise<number>;
         avg(
           attribute: string,
-          params: ModelFindParams<instance> | OtherModelFindParams,
+          params: ModelFindParams<instance> | OtherModelFindParams<instance>,
         ): WaterlinePromise<number>;
         sum(
           atrribute: string,
-          params: ModelFindParams<instance> | OtherModelFindParams,
+          params: ModelFindParams<instance> | OtherModelFindParams<instance>,
         ): WaterlinePromise<number>;
-        let(params: any): QueryBuilder<any>;
+        let(params: any): BaseModelMethods<instance>;
         findWithCount(
           params: ModelFindParams<instance> | FindObjectParams<instance>,
         ): QueryBuilder<FindWithCountResults>;
-        upsert( params: ModelFindParams<instance> | OtherModelFindParams): QueryBuilder<instance[]>;
+        upsert( params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
 
         /**
@@ -416,8 +422,12 @@ module.exports = {
       }
 
 
-      function getDocumentAsync<instance>(params: any, merchantcode?:string): WaterlinePromise<instance>;
-      function getDocument<instance>(params: any): instance;
+      function getDocumentAsync<instance>(params: {
+        _id: string;
+      }, merchantcode?:string): WaterlinePromise<instance>;
+      function getDocument<instance>(params: {
+        _id: string;
+      }): instance;
 
       declare const SystemSettings: {
         [key: string]: any;
@@ -491,6 +501,8 @@ module.exports = {
 
       //We can override the below.
       // DBO
+
+      type ${globalId}QueryParams = ModelFindParams<${globalId}ObjectInstance> | OtherModelFindParams<${globalId}ObjectInstance>;
      
      interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
         // [key: string]: any;
@@ -507,6 +519,8 @@ module.exports = {
         prototype: ${globalId}DboInstance;
         [key: string]: any;
       }
+
+
 
 
       let ${globalId}Object: ${globalId}Object;
