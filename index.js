@@ -166,6 +166,119 @@ includeFiles.getDictionary(
   }
 );
 
+function createGraphqlOverride({ url, file, definition }) {
+  const isFile =
+    Object.keys(definition).length === 2 &&
+    Object.keys(definition).includes("identity") &&
+    Object.keys(definition).includes("globalId");
+
+  if (isFile) {
+    try {
+      if (fs.existsSync(`${url}.ts`)) {
+        //file exists
+      } else {
+        fs.writeFile(
+          `${url}.ts`,
+          `import { GraphQLNonNull, GraphQLBoolean } from 'graphql';
+
+module.exports = {
+  /**
+   * @param {ModelType, ModelProperties, ModelTypes, Models, CustomTypes}
+   * @description This function is used to extend the the graphql root methods of find, getOne, etc
+   * @returns Object
+   */
+  rootMethods: function ({ModelType, CustomTypes: { AnyType }}: any) {
+    return {
+      create: {
+        type: ModelType,
+        description: 'Create a document in the ${file} collection',
+        args: {
+          params: { type: AnyType },
+        },
+        resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
+          // const { merchantcode, ...headers } = req.headers;
+          // const doc = await ${file}Object.getOne(params, merchantcode);
+          // return doc;
+        },
+      }
+    };
+  },
+  /**
+   * @param {schemaTypes, CustomTypes}
+   * @description This function is used to extend the the graphql schema properties methods
+   * @returns Object
+   */
+  properties: function ({ CustomTypes: { AnyType } }: any) {
+    return {
+      update: {
+        type: new GraphQLNonNull(GraphQLBoolean),
+        description: 'Update the ${file}',
+        args: {
+          params: {
+            type: AnyType,
+          },
+        },
+        resolve: async (source: any, { params }: any) => {
+          console.log('update ${file}', source.globalId, typeof params);
+          return true;
+        },
+      },
+    };
+  },
+};
+`,
+          function (err) {
+            // do nothing
+          }
+        );
+      }
+    } catch (err) {
+      // nothing to do
+    }
+  } else {
+    ensureFolderExists(`${url}`, () => {
+      //
+    });
+
+    const files = Object.keys(definition).filter(
+      (t) => !["identity", "globalId"].includes(t)
+    );
+
+    for (const file of files) {
+      createGraphqlOverride({
+        url: `${url}/${file}`,
+        file,
+        definition: definition[file],
+      });
+    }
+  }
+}
+
+includeFiles.getDictionary(
+  {
+    dirname: `${rootDir}/api/models`,
+    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    // replaceExpr: /^.*\//,
+  },
+  (err, models) => {
+    ensureFolderExists(`${rootDir}/api/graphql`, () => {
+      //
+    });
+
+    const files = Object.keys(models).filter(
+      (t) => !["identity", "globalId"].includes(t)
+    );
+    for (const file of files) {
+      const definition = models[file];
+      createGraphqlOverride({
+        url: `${rootDir}/api/graphql/${file}`,
+        file,
+        definition,
+      });
+    }
+  }
+);
+
 includeFiles.getDictionary(
   {
     dirname: `${rootDir}/api/models`,
