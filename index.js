@@ -187,10 +187,10 @@ module.exports = {
    * @description This function is used to extend the the graphql root methods of find, getOne, etc
    * @returns Object
    */
-  rootMethods: function ({ModelType, CustomTypes: { AnyType }}: any) {
+  rootMethods: function ({${file}Model, CustomTypes: { AnyType }}: any) {
     return {
       create: {
-        type: ModelType,
+        type: ${file}Model,
         description: 'Create a document in the ${file} collection',
         args: {
           params: { type: AnyType },
@@ -204,7 +204,7 @@ module.exports = {
     };
   },
   /**
-   * @param {schemaTypes, CustomTypes}
+   * @param {SchemaTypes, ModelTypes, CustomTypes}
    * @description This function is used to extend the the graphql schema properties methods
    * @returns Object
    */
