@@ -340,7 +340,7 @@ module.exports = {
           params: ModelUpdateParams<instance>,
         ): QueryBuilder<instance>;
         find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
-        destroy(params: ModelFindParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
+        destroy(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
         count(params: ModelFindParams<instance> | OtherModelFindParams<instance>): WaterlinePromise<number>;

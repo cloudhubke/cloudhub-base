@@ -179,7 +179,7 @@ function createGraphqlOverride({ url, file, definition }) {
       } else {
         fs.writeFile(
           `${url}.ts`,
-          `import { GraphQLNonNull, GraphQLBoolean } from 'graphql';
+          `import { GraphQLNonNull, GraphQLList, GraphQLBoolean } from 'graphql';
 
 module.exports = {
   /**
@@ -197,8 +197,22 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // const doc = await ${file}Object.getOne(params, merchantcode);
+          // const doc = await _${file}(merchantcode).create(params).fetch();
           // return doc;
+        },
+      },
+      destroy: {
+        type: new GraphQLList(${file}Model),
+        description: 'Destroy documents in the ${file} collection',
+        args: {
+          params: { type: AnyType },
+        },
+        resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
+          // const { merchantcode, ...headers } = req.headers;
+          // const docs = await _${file}(merchantcode).destroy({
+          //   ...params,
+          // }).fetch();
+          // return docs;
         },
       }
     };
