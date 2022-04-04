@@ -189,7 +189,7 @@ module.exports = {
    */
   rootMethods: function ({${file}Model, CustomTypes: { AnyType }}: any) {
     return {
-      create: {
+      save: {
         type: ${file}Model,
         description: 'Create a document in the ${file} collection',
         args: {
@@ -197,7 +197,15 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // const doc = await _${file}(merchantcode).create(params).fetch();
+          // let doc;
+          // if(params.id){
+          //   doc = await _${file}(merchantcode).findOne({ id: params.id });
+          //   if(doc){
+          //     await doc.update(params);
+          //   }
+          // }else{
+          //   doc = await _${file}(merchantcode).create(params).fetch();
+          // }
           // return doc;
         },
       },
