@@ -299,12 +299,12 @@ module.exports = {
 
     // These are the methods of an Object constructor eg. UserObject.findOne({id})
       declare interface BaseObject <instance> {
-        create(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
-        getDocument(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
-        getOne(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
-        findOne(params: any, merchantcode?:string): WaterlinePromise<instance>;
+        create(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        getDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        getOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        findOne(params: params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findDocument(params: any, merchantcode?:string): WaterlinePromise<instance>;
+        findDocument(params: params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
 
         modelOverrides: {
           tenantType?: string[],
