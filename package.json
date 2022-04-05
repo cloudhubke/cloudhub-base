@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-cloudhub-base",
-  "version": "0.4.37",
+  "version": "0.4.39",
   "keywords": [
     "eslint",
     "eslintplugin",
