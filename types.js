@@ -302,9 +302,9 @@ module.exports = {
         create(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         getDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         getOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findOne(params: params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        findOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findDocument(params: params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
 
         modelOverrides: {
           tenantType?: string[],
