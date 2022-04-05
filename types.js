@@ -303,6 +303,7 @@ module.exports = {
         getDocument(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
         getOne(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
         findOne(params: any, merchantcode?:string): WaterlinePromise<instance>;
+        findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): WaterlinePromise<instance>;
         findDocument(params: any, merchantcode?:string): WaterlinePromise<instance>;
 
         modelOverrides: {

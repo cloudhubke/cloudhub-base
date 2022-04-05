@@ -204,6 +204,12 @@ module.exports = {
           //     await doc.update(params);
           //   }
           // }else{
+          //   if (!params.RefNo) {
+          //     params.RefNo = await 
+          //     CounterObject.nextId('${file
+            .substring(0, 2)
+            .toUpperCase()}', merchantcode);
+          //   }
           //   doc = await _${file}(merchantcode).create(params).fetch();
           // }
           // return doc;
