@@ -246,8 +246,8 @@ module.exports = {
             type: AnyType,
           },
         },
-        resolve: async (source: any, { params }: any) => {
-          console.log('update ${file}', source.globalId, typeof params);
+        resolve: async (${`${file}`.toLowerCase()}: ${file}ObjectInstance, { params }: any) => {
+          console.log('update ${file}', ${`${file}`.toLowerCase()}.globalId, typeof params);
           return true;
         },
       },

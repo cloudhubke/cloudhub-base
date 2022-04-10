@@ -268,7 +268,7 @@ module.exports = {
         getDocument(params: {
           _id: string;
         }): instance;
-        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance;
+        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance | null;
         firstExample(params: PartialInstance<instance>): instance;
         find(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): ArangoDB.Cursor;
         initialize(params: PartialInstance<instance>): instance;
@@ -302,7 +302,7 @@ module.exports = {
         create(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         getDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         getOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+        findOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance | null>;
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
 
