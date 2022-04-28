@@ -155,11 +155,11 @@ module.exports = {
 
      
       interface ModelFindCriteria {
-        $gt?: number;
-        $gte?: number;
-        $lt?: number;
-        $lte?: number;
-        $ne?: number;
+        $gt?: any;
+        $gte?: any;
+        $lt?: any;
+        $lte?: any;
+        $ne?: any;
         $like?: string;
         $notlike?: string;
         $in?: number[] | string[];
@@ -187,8 +187,16 @@ module.exports = {
       };
 
       interface OtherModelFindParams<T> {
-        $or?: Array<ModelFindParams<T>>;
-        $and?: Array<ModelFindParams<T>>;
+        $or?: Array<ModelFindParams<T> | {
+          [key: ObjectKey]: any;
+        } | {
+          [key: QueryVariable]: any;
+        }>;
+        $and?:  Array<ModelFindParams<T> | {
+          [key: ObjectKey]: any;
+        } | {
+          [key: QueryVariable]: any;
+        }>;
         [key: ObjectKey]: any;
         [key: QueryVariable]: any;
       }
@@ -286,7 +294,11 @@ module.exports = {
         limit(lim: number): QueryBuilder<T>;
         skip(num: number): QueryBuilder<T>;
         sort(criteria: string): QueryBuilder<T>;
-        meta(params: any): QueryBuilder<T>;
+        meta(params: {
+          fetch?: boolean;
+          trx?: any;
+          [key: string]: any;
+        }): QueryBuilder<T>;
         set(params: ModelUpdateParams<T> | {
           [key: string]: ModelUpdateCriteria;
         }): QueryBuilder<T>;
@@ -333,8 +345,8 @@ module.exports = {
         createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
         findOne(
           params: string | ModelFindParams<instance> | OtherModelFindParams<instance>,
-        ): QueryBuilder<instance>;
-        findDocument(params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance>;
+        ): QueryBuilder<instance | null>;
+        findDocument(params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance | null>;
         updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance>;
         updateOne(
           criteria: string | ModelFindParams<instance> |  OtherModelFindParams,

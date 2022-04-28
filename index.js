@@ -197,9 +197,13 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // let doc;
+          // let doc:${file}ObjectInstance | null;
+          // let Model = ${file};
+          // if(merchantcode){
+          //   Model = _${file}(merchantcode);
+          // }
           // if(params.id){
-          //   doc = await _${file}(merchantcode).findOne({ id: params.id });
+          //   doc = await Model.findOne({ id: params.id });
           //   if(doc){
           //     await doc.update(params);
           //   }
@@ -210,7 +214,7 @@ module.exports = {
             .substring(0, 2)
             .toUpperCase()}', merchantcode);
           //   }
-          //   doc = await _${file}(merchantcode).create(params).fetch();
+          //   doc = await Model.create(params).fetch();
           // }
           // return doc;
         },
@@ -223,7 +227,11 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // const docs = await _${file}(merchantcode).destroy({
+          // let Model = ${file};
+          // if(merchantcode){
+          //   Model = _${file}(merchantcode);
+          // }
+          // const docs = await Model.destroy({
           //   ...params,
           // }).fetch();
           // return docs;
