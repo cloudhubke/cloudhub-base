@@ -539,11 +539,7 @@ module.exports = {
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
         prototype: ${globalId}DboInstance;
-        [key: string]: any;
       }
-
-
-
 
       let ${globalId}Object: ${globalId}Object;
       let ${globalId}Dbo: ${globalId}Dbo;
