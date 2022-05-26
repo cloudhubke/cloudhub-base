@@ -369,6 +369,7 @@ module.exports = {
         findWithCount(
           params: ModelFindParams<instance> | FindObjectParams<instance>,
         ): QueryBuilder<FindWithCountResults>;
+        update( params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         upsert( params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
 
