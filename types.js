@@ -212,7 +212,7 @@ module.exports = {
         where: ModelFindParams<T> | OtherModelFindParams<T>;
         skip?: number;
         limit?: number;
-        sort?: string;
+        sort?: string | Array<string>;
         select?: string[] | string;  
       }
 
