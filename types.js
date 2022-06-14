@@ -317,7 +317,7 @@ module.exports = {
         findOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance | null>;
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-
+        searchFields: string[];
         modelOverrides: {
           tenantType?: string[],
           keyProps: string[],
