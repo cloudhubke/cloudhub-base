@@ -318,6 +318,14 @@ module.exports = {
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         searchFields: string[];
+        modelAttributes: {
+          type: string;
+          required: boolean;
+          defaultsTo: any;
+          allowNull: boolean;
+          unique: boolean;
+          rules: any;
+        },
         modelOverrides: {
           tenantType?: string[],
           keyProps: string[],
