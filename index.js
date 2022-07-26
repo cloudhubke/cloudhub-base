@@ -244,10 +244,10 @@ module.exports = {
    * @description This function is used to extend the the graphql schema properties methods
    * @returns Object
    */
-  properties: function ({ CustomTypes: { AnyType } }: any) {
+  properties: function ({${file}Model, CustomTypes: { AnyType } }: any) {
     return {
       update: {
-        type: new GraphQLNonNull(GraphQLBoolean),
+        type: ${file}Model,
         description: 'Update the ${file}',
         args: {
           params: {
@@ -389,7 +389,6 @@ module.exports = {
     normalize: true,
     getDocument: true,
     Promise: true,
-
     ...globals,
   },
   rules: {
