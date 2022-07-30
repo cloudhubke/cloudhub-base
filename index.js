@@ -187,13 +187,13 @@ module.exports = {
    * @description This function is used to extend the the graphql root methods of find, getOne, etc
    * @returns Object
    */
-  rootMethods: function ({${file}Model, CustomTypes: { AnyType }}: any) {
+  rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: any) {
     return {
       save: {
         type: ${file}Model,
         description: 'Create a document in the ${file} collection',
         args: {
-          params: { type: AnyType },
+          params: { type: ObjectType },
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
@@ -223,7 +223,7 @@ module.exports = {
         type: new GraphQLList(${file}Model),
         description: 'Destroy documents in the ${file} collection',
         args: {
-          params: { type: AnyType },
+          params: { type: ObjectType },
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
@@ -244,14 +244,14 @@ module.exports = {
    * @description This function is used to extend the the graphql schema properties methods
    * @returns Object
    */
-  properties: function ({${file}Model, CustomTypes: { AnyType } }: any) {
+  properties: function ({${file}Model, CustomTypes: { ObjectType } }: any) {
     return {
       update: {
         type: ${file}Model,
         description: 'Update the ${file}',
         args: {
           params: {
-            type: AnyType,
+            type: ObjectType,
           },
         },
         resolve: async (${`${file}`.toLowerCase()}: ${file}ObjectInstance, { params }: any) => {
