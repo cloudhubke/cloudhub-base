@@ -189,11 +189,11 @@ module.exports = {
    */
   rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: any) {
     return {
-      save: {
+      save:  ({inputObject})=>({
         type: ${file}Model,
         description: 'Create a document in the ${file} collection',
         args: {
-          params: { type: ObjectType },
+          params: { type: inputObject({}) },
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
@@ -218,12 +218,12 @@ module.exports = {
           // }
           // return doc;
         },
-      },
-      destroy: {
+      }),
+      destroy: ({inputObject})=>({
         type: new GraphQLList(${file}Model),
         description: 'Destroy documents in the ${file} collection',
         args: {
-          params: { type: ObjectType },
+          params: { type: inputObject({}) },
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
@@ -236,7 +236,7 @@ module.exports = {
           // }).fetch();
           // return docs;
         },
-      }
+      })
     };
   },
   /**
@@ -246,12 +246,12 @@ module.exports = {
    */
   properties: function ({${file}Model, CustomTypes: { ObjectType } }: any) {
     return {
-      update: {
+      update:  ({inputObject})=>({
         type: ${file}Model,
         description: 'Update the ${file}',
         args: {
           params: {
-            type: ObjectType,
+            type: inputObject({}),
           },
         },
         resolve: async (${`${file}`.toLowerCase()}: ${file}ObjectInstance, { params }: any) => {
