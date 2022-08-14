@@ -556,6 +556,20 @@ module.exports = {
 
      
       // End Declarations for ${globalId}
+
+      interface GraphqlModelMethodParams {
+        inputObject: (params?: {
+          [key: string]: {
+            type: string;
+          };
+        }) => any;
+        outputObject: (params?: {
+          [key: string]: {
+            type: string;
+          };
+        }) => any;
+      }
+      
       
       `;
 
