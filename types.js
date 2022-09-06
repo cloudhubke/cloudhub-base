@@ -299,9 +299,6 @@ module.exports = {
           trx?: any;
           [key: string]: any;
         }): QueryBuilder<T>;
-        set(params: ModelUpdateParams<T> | {
-          [key: string]: ModelUpdateCriteria;
-        }): QueryBuilder<T>;
         select(params: string[]): QueryBuilder<T>;
         paginate(pagination?: { page: number; limit: number }): QueryBuilder<T>;
         populate(association: string): QueryBuilder<T>;
@@ -355,11 +352,19 @@ module.exports = {
           params: string | ModelFindParams<instance> | OtherModelFindParams<instance>,
         ): QueryBuilder<instance | null>;
         findDocument(params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance | null>;
-        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance>;
+        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): {
+          set(params: {
+            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+          }): QueryBuilder<instance>;
+        };
         updateOne(
           criteria: string | ModelFindParams<instance> |  OtherModelFindParams,
           params: ModelUpdateParams<instance>,
-        ): QueryBuilder<instance>;
+        ): {
+          set(params: {
+            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+          }): QueryBuilder<instance>;
+        };
         find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         destroy(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
@@ -377,8 +382,16 @@ module.exports = {
         findWithCount(
           params: ModelFindParams<instance> | FindObjectParams<instance>,
         ): QueryBuilder<FindWithCountResults>;
-        update( params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance[]>;
-        upsert( params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance[]>;
+        update( params: ModelFindParams<instance> | OtherModelFindParams<instance>): {
+          set(params: {
+            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+          }): QueryBuilder<instance[]>;
+        };
+        upsert( params: ModelFindParams<instance> | OtherModelFindParams<instance>): {
+          set(params: {
+            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+          }): QueryBuilder<instance[]>;
+        };
         normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
 
         /**
