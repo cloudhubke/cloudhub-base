@@ -341,58 +341,58 @@ module.exports = {
 
     // these are the mothods that are used by sails models. eg. User.create(params)
 
-      declare interface BaseModelMethods <instance> {
-        create(params: Partial<instance>): QueryBuilder<instance>;
+      declare interface BaseModelMethods <modelProps,instance> {
+        create(params: Partial<modelProps>): QueryBuilder<instance>;
         createEdge(
-          params: PartialInstance<instance>,
+          params: PartialInstance<modelProps>,
           vertices: any,
         ): QueryBuilder<instance>;
-        createEach(params: PartialInstance<instance>[]): QueryBuilder<instance[]>;
+        createEach(params: PartialInstance<modelProps>[]): QueryBuilder<instance[]>;
         findOne(
-          params: string | ModelFindParams<instance> | OtherModelFindParams<instance>,
+          params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>,
         ): QueryBuilder<instance | null>;
-        findDocument(params: ModelFindParams<instance> | OtherModelFindParams<instance>): QueryBuilder<instance | null>;
-        updateOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): {
+        findDocument(params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): QueryBuilder<instance | null>;
+        updateOne(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): {
           set(params: {
-            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+            [K in keyof modelProps]?: modelProps[K] | ModelUpdateCriteria;
           }): QueryBuilder<instance>;
         };
         updateOne(
-          criteria: string | ModelFindParams<instance> |  OtherModelFindParams,
-          params: ModelUpdateParams<instance>,
+          criteria: string | ModelFindParams<modelProps> |  OtherModelFindParams,
+          params: ModelUpdateParams<modelProps>,
         ): {
           set(params: {
-            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+            [K in keyof modelProps]?: modelProps[K] | ModelUpdateCriteria;
           }): QueryBuilder<instance>;
         };
-        find(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
-        destroy(params: ModelFindParams<instance> | FindObjectParams<instance> |  OtherModelFindParams<instance>): QueryBuilder<instance[]>;
+        find(params: ModelFindParams<modelProps> | FindObjectParams<modelProps> |  OtherModelFindParams<modelProps>): QueryBuilder<instance[]>;
+        destroy(params: ModelFindParams<modelProps> | FindObjectParams<modelProps> |  OtherModelFindParams<modelProps>): QueryBuilder<instance[]>;
         sample(params?: any): QueryBuilder<instance[]>;
         findNear(params: any): QueryBuilder<instance[]>;
-        count(params: ModelFindParams<instance> | OtherModelFindParams<instance>): WaterlinePromise<number>;
+        count(params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): WaterlinePromise<number>;
         avg(
           attribute: string,
-          params: ModelFindParams<instance> | OtherModelFindParams<instance>,
+          params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>,
         ): WaterlinePromise<number>;
         sum(
           atrribute: string,
-          params: ModelFindParams<instance> | OtherModelFindParams<instance>,
+          params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>,
         ): WaterlinePromise<number>;
-        let(params: any): BaseModelMethods<instance>;
+        let(params: any): BaseModelMethods<modelProps, instance>;
         findWithCount(
-          params: ModelFindParams<instance> | FindObjectParams<instance>,
+          params: ModelFindParams<modelProps> | FindObjectParams<modelProps>,
         ): QueryBuilder<FindWithCountResults>;
-        update( params: ModelFindParams<instance> | OtherModelFindParams<instance>): {
+        update( params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): {
           set(params: {
-            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+            [K in keyof modelProps]?: modelProps[K] | ModelUpdateCriteria;
           }): QueryBuilder<instance[]>;
         };
-        upsert( params: ModelFindParams<instance> | OtherModelFindParams<instance>): {
+        upsert( params: ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): {
           set(params: {
-            [K in keyof instance]?: instance[K] | ModelUpdateCriteria;
+            [K in keyof modelProps]?: modelProps[K] | ModelUpdateCriteria;
           }): QueryBuilder<instance[]>;
         };
-        normalize: (params: PartialInstance<instance>) => WaterlinePromise<instance>;
+        normalize: (params: PartialInstance<modelProps>) => WaterlinePromise<instance>;
 
         /**
          * perform aggregations on the model
@@ -532,8 +532,8 @@ module.exports = {
       }
 
       // THESE ARE FOR WATERLINE MODELS
-      declare let ${globalId}: BaseModelMethods<${globalId}ObjectInstance>;
-      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}ObjectInstance>;
+      declare let ${globalId}: BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
+      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
 
 
       interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance> {
