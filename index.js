@@ -122,7 +122,7 @@ ensureSailsDts();
 includeFiles.getDictionary(
   {
     dirname: `${rootDir}/api/models/merchantadmin`,
-    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    filter: /(.*).(ts|js)(?<!\.d\.ts)$/,
     replaceExpr: /^.*\//,
   },
   (err, models) => {
@@ -293,7 +293,7 @@ module.exports = {
 includeFiles.getDictionary(
   {
     dirname: `${rootDir}/api/models`,
-    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    filter: /(.*).(ts|js)(?<!\.d\.ts)$/,
     // replaceExpr: /^.*\//,
   },
   (err, models) => {
@@ -318,7 +318,7 @@ includeFiles.getDictionary(
 includeFiles.getDictionary(
   {
     dirname: `${rootDir}/api/models`,
-    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    filter: /(.*).(ts|js)(?<!\.d\.ts)$/,
     replaceExpr: /^.*\//,
     flatten: true,
   },
@@ -355,7 +355,7 @@ if (getState().modelTypes !== typeStr) {
 includeFiles.exists(
   {
     dirname: `${rootDir}/api/services`,
-    filter: /^(.+)\.(?:(?!md|txt).)+$/,
+    filter: /(.*).(ts|js)(?<!\.d\.ts)$/,
     replaceExpr: /^.*\//,
     flatten: true,
   },
