@@ -258,7 +258,7 @@ module.exports = {
           console.log('update ${file}', ${`${file}`.toLowerCase()}.globalId, typeof params);
           return true;
         },
-      },
+      }),
     };
   },
 };
