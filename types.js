@@ -576,7 +576,7 @@ module.exports = {
             type: string;
           };
         }) => any;
-        outputObject: (params?: {
+        resultObject: (params?: {
           [key: string]: {
             type: string;
           };
