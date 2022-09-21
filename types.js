@@ -315,6 +315,7 @@ module.exports = {
         findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
         searchFields: string[];
+        modelDefaults: any;
         modelAttributes: {
           type: string;
           required: boolean;
