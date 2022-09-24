@@ -478,6 +478,21 @@ module.exports = {
       declare const SystemSettings: {
         [key: string]: any;
       };
+
+
+      interface GraphqlModelMethodParams {
+        inputObject: (params?: {
+          [key: string]: {
+            type: 'string' | 'number' | 'boolean' | 'array' | 'object';
+          };
+        }) => any;
+        resultObject: (params?: {
+          [key: string]: {
+            type: string;
+          };
+        }) => any;
+      }
+
       `;
 
     return baseVertex;
@@ -571,18 +586,7 @@ module.exports = {
      
       // End Declarations for ${globalId}
 
-      interface GraphqlModelMethodParams {
-        inputObject: (params?: {
-          [key: string]: {
-            type: string;
-          };
-        }) => any;
-        resultObject: (params?: {
-          [key: string]: {
-            type: string;
-          };
-        }) => any;
-      }
+   
       
       
       `;
