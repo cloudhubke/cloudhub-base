@@ -189,7 +189,7 @@ module.exports = {
    */
   rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: any) {
     return {
-      save:  ({inputObject})=>({
+      save:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
         description: 'Create a document in the ${file} collection',
         args: {
@@ -219,7 +219,7 @@ module.exports = {
           // return doc;
         },
       }),
-      destroy: ({inputObject})=>({
+      destroy: ({inputObject}: GraphqlModelMethodParams)=>({
         type: new GraphQLList(${file}Model),
         description: 'Destroy documents in the ${file} collection',
         args: {
@@ -246,7 +246,7 @@ module.exports = {
    */
   properties: function ({${file}Model, CustomTypes: { ObjectType } }: any) {
     return {
-      update:  ({inputObject})=>({
+      update:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
         description: 'Update the ${file}',
         args: {
