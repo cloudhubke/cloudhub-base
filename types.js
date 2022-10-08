@@ -264,7 +264,6 @@ module.exports = {
         reInitialize(params: PartialInstance<this>): void; 
         globalId: string;
         instanceName: string;
-        modelDefaults: any;
         keyProps: BaseKeyProps;
       }
   
@@ -577,6 +576,7 @@ module.exports = {
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
         prototype: ${globalId}DboInstance;
+        modelDefaults: any;
       }
 
       let ${globalId}Object: ${globalId}Object;
