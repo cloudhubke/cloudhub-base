@@ -541,7 +541,14 @@ module.exports = {
      
       //We can override the below.
       // DBOBJECTS
-      interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props {
+      interface Base${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props {
+        getKeyProps(): ${globalId}KeyProps;
+        keyProps: ${globalId}KeyProps;
+      }
+      
+      type Extend${globalId}ObjectInstanceType = typeof Extend${globalId}ObjectInstance;
+
+      interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props  Extend${globalId}ObjectInstanceType{
         getKeyProps(): ${globalId}KeyProps;
         keyProps: ${globalId}KeyProps;
       }
@@ -549,12 +556,14 @@ module.exports = {
       // THESE ARE FOR WATERLINE MODELS
       declare let ${globalId}: BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
       declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
+      type Extend${globalId}ObjectType = typeof Extend${globalId}Object;
 
 
-      interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance> {
+      interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance>, Extend${globalId}ObjectType {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
+        __proto: Base${globalId}ObjectInstance;
         prototype: ${globalId}ObjectInstance;
       }
 
