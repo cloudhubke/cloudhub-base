@@ -548,7 +548,7 @@ module.exports = {
       
       type Extend${globalId}ObjectInstanceType = typeof Extend${globalId}ObjectInstance;
 
-      interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props  Extend${globalId}ObjectInstanceType{
+      interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props,  Extend${globalId}ObjectInstanceType{
         getKeyProps(): ${globalId}KeyProps;
         keyProps: ${globalId}KeyProps;
       }
