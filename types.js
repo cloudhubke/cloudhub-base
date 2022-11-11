@@ -545,8 +545,14 @@ module.exports = {
         getKeyProps(): ${globalId}KeyProps;
         keyProps: ${globalId}KeyProps;
       }
+
+      interface Base${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
+        getKeyProps(): ${globalId}KeyProps;
+        keyProps: ${globalId}KeyProps;
+      }
       
       type Extend${globalId}ObjectInstanceType = typeof Extend${globalId}ObjectInstance;
+      type Extend${globalId}DboInstanceType = typeof Extend${globalId}DboInstance;
 
       interface ${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props,  Extend${globalId}ObjectInstanceType{
         getKeyProps(): ${globalId}KeyProps;
@@ -556,7 +562,9 @@ module.exports = {
       // THESE ARE FOR WATERLINE MODELS
       declare let ${globalId}: BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
       declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
+
       type Extend${globalId}ObjectType = typeof Extend${globalId}Object;
+      type Extend${globalId}DboType = typeof Extend${globalId}Dbo;
 
 
       interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance>, Extend${globalId}ObjectType {
@@ -572,7 +580,7 @@ module.exports = {
 
       type ${globalId}QueryParams = ModelFindParams<${globalId}ObjectInstance> | OtherModelFindParams<${globalId}ObjectInstance>;
      
-     interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
+     interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props,  Extend${globalId}DboInstanceType {
         // [key: string]: any;
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
@@ -580,10 +588,11 @@ module.exports = {
         getKeyProps(): ${globalId}KeyProps;
       }
 
-      interface ${globalId}Dbo extends BaseDbo<${globalId}DboInstance> {
+      interface ${globalId}Dbo extends BaseDbo<${globalId}DboInstance>, Extend${globalId}DboType  {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
+        __proto: Base${globalId}DboInstance;
         prototype: ${globalId}DboInstance;
         modelDefaults: any;
       }
