@@ -93,6 +93,8 @@ module.exports = {
 
     // END MODEL DEFINITION
 
+      declare function ulid (seedTime?: number): string;
+
       type Database = import('arangojs/database').Database;
 
       declare interface BaseVertex {
