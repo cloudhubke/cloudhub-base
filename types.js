@@ -93,8 +93,8 @@ module.exports = {
 
     // END MODEL DEFINITION
 
-      declare function ulid (seedTime?: number): string;
 
+      declare function ulid (seedTime?: number): string;
       type Database = import('arangojs/database').Database;
 
       declare interface BaseVertex {
@@ -110,9 +110,11 @@ module.exports = {
         _to: string;
       }
 
+      type refKeys = '_ref' | '_id';
+
       declare interface BaseKeyProps {
         id: string;
-        _id: string;
+        _ref: string;
         [key: string]: any;
       }
 
@@ -275,7 +277,7 @@ module.exports = {
         create(params: PartialInstance<instance>): instance;
         create(from: any, to: any, params: PartialInstance<instance>): instance;
         getDocument(params: {
-          _id: string;
+          [key: refKeys]: string;
         }): instance;
         findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance | null;
         firstExample(params: PartialInstance<instance>): instance;
@@ -470,10 +472,10 @@ module.exports = {
 
 
       function getDocumentAsync<instance>(params: {
-        _id: string;
+        [key: refKeys]: string;
       }, merchantcode?:string): WaterlinePromise<instance>;
       function getDocument<instance>(params: {
-        _id: string;
+        [key: refKeys]: string;
       }): instance;
 
       declare const SystemSettings: {
