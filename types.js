@@ -100,6 +100,7 @@ module.exports = {
       declare interface BaseVertex {
         id: string;
         _id: string;
+        _ref: string;
         _key: string;
         createdAt: number,
         updatedAt: number,
