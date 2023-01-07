@@ -400,6 +400,7 @@ module.exports = {
     "no-global-assign": "error",
     "no-restricted-syntax": "off",
     "import/no-extraneous-dependencies": "off",
+    "no-const-assign": "error"
     "import/no-unresolved": "off",
     "no-console": "off",
     "prefer-destructuring": "off",
