@@ -245,6 +245,7 @@ module.exports = {
         tenantcode: string;
         cache: boolean;
         globalId: string;
+        tableName: string;
         classType: string;
         _Transaction(params: TransactionParams): Promise<any>;
         _dbConnection: Database;
