@@ -443,7 +443,7 @@ module.exports = {
          *  },
          * });
          * 
-         */
+         **/
         aggregate: (params: {
           $let?:{
             [key: string]: any
@@ -480,7 +480,7 @@ module.exports = {
        * @param params {_id: string, _ref: string} - the reference keys of the document
        * @param merchantcode - the merchantcode of the document
        * @returns DbObjectInstance
-       * /
+       **/
       function getDocumentAsync<instance>(params: {
         [key: refKeys]: string;
       }, merchantcode?:string): WaterlinePromise<instance>;
@@ -491,7 +491,7 @@ module.exports = {
        * @param options - {fireOnGetOne: true} - if true, will fire the onGetOne hook
        * @param options.fireOnGetOne - if true, will fire the onGetOne hook
        * @returns DboInstance
-       * /
+       **/
       function getDocument<instance>(params: {
         [key: refKeys]: string;
       }, options?: {fireOnGetOne: boolean;} ): instance;
@@ -501,7 +501,7 @@ module.exports = {
        * @description - this method will not fire the onGetOne hook
        * @param params {_id: string, _ref: string}
        * @returns DboInstance
-       * /
+       **/
       function findDocument<instance>(params: {
         [key: refKeys]: string;
       }): instance;
