@@ -477,6 +477,10 @@ module.exports = {
 
       /**
        * @description - get a document by its reference keys. Dont use this method inside a transaction
+       * @param params {_id: string, _ref: string} - the reference keys of the document
+       * @param merchantcode - the merchantcode of the document
+       * @returns DbObjectInstance
+       * /
       function getDocumentAsync<instance>(params: {
         [key: refKeys]: string;
       }, merchantcode?:string): WaterlinePromise<instance>;
@@ -497,6 +501,7 @@ module.exports = {
        * @description - this method will not fire the onGetOne hook
        * @param params {_id: string, _ref: string}
        * @returns DboInstance
+       * /
       function findDocument<instance>(params: {
         [key: refKeys]: string;
       }): instance;
