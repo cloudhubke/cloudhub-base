@@ -545,7 +545,7 @@ module.exports = {
     let dbCollections = `
       declare interface db extends dbCollections {
           ${renderCollections()}
-      };
+      }
       
       declare const db: db;
       
