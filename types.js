@@ -280,6 +280,9 @@ module.exports = {
         create(from: any, to: any, params: PartialInstance<instance>): instance;
         getDocument(params: {
           [key: refKeys]: string;
+        }, options?: {fireOnGetOne: boolean;}): instance;
+        findDocument(params: {
+          [key: refKeys]: string;
         }): instance;
         findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance | null;
         firstExample(params: PartialInstance<instance>): instance;
@@ -472,13 +475,32 @@ module.exports = {
         }) => WaterlinePromise<any>;
       }
 
-
+      /**
+       * @description - get a document by its reference keys. Dont use this method inside a transaction
       function getDocumentAsync<instance>(params: {
         [key: refKeys]: string;
       }, merchantcode?:string): WaterlinePromise<instance>;
+
+      /**
+       * @description - get a document by its reference keys. Use this method inside a transaction. Dont use it within a onGetOne hook
+       * @param params {_id: string, _ref: string}
+       * @param options - {fireOnGetOne: true} - if true, will fire the onGetOne hook
+       * @param options.fireOnGetOne - if true, will fire the onGetOne hook
+       * @returns DboInstance
+       * /
       function getDocument<instance>(params: {
         [key: refKeys]: string;
+      }, options?: {fireOnGetOne: boolean;} ): instance;
+
+      /**
+       * @description - find a document by its reference keys. Use this method inside a transaction. You can use it within a onGetOne hook
+       * @description - this method will not fire the onGetOne hook
+       * @param params {_id: string, _ref: string}
+       * @returns DboInstance
+      function findDocument<instance>(params: {
+        [key: refKeys]: string;
       }): instance;
+
 
       declare const SystemSettings: {
         [key: string]: any;
