@@ -530,6 +530,60 @@ module.exports = {
     return baseVertex;
   },
 
+  graphqlTypes: function (models) {
+    function renderCollections() {
+      let collections = ``;
+      for (const key in models) {
+        const model = models[key];
+
+        collections = `${collections}
+
+        interface ${model.globalId}GraqlqlModelParams {
+          
+          ModelProperties: IModels;
+          ${model.globalId}Model: any;
+          ModelType: any;
+          ModelTypes: IModelTypes;
+          Models: IModels;
+          CustomTypes: {
+            ObjectType: any;
+            AnyValueType: any;
+            AnyDocumentType: any;
+          },
+          Obj: any;
+          FindResults: {
+            totalCount: number;
+            items: any[];
+          }
+        }`;
+      }
+      return collections;
+    }
+
+    let graphqlCollections = `
+        interface IModelTypes {
+          ${Object.keys(models).reduce(
+            (acc, key) => `${acc}
+            ${models[key].globalId}Model: any;`,
+            ""
+          )}
+        }
+
+        interface IModels {
+          ${Object.keys(models).reduce(
+            (acc, key) => `${acc}
+            ${models[key].globalId}: any;`,
+            ""
+          )}
+        }
+         
+        ${renderCollections()}
+      
+    `;
+
+    return graphqlCollections;
+  },
+
   dbCollections: function (models) {
     function renderCollections() {
       let collections = ``;
@@ -632,7 +686,6 @@ module.exports = {
 
       let ${globalId}Object: ${globalId}Object;
       let ${globalId}Dbo: ${globalId}Dbo;
-
 
      
       // End Declarations for ${globalId}

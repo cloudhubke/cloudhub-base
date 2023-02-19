@@ -12,6 +12,8 @@ let modelTypes = "";
 
 let dbCollections = "";
 
+let graphqlTypes = "";
+
 function ensureFolderExists(path, mask, cb) {
   if (typeof mask == "function") {
     // Allow the `mask` parameter to be optional
@@ -187,7 +189,7 @@ module.exports = {
    * @description This function is used to extend the the graphql root methods of find, getOne, etc
    * @returns Object
    */
-  rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: any) {
+  rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: ${file}GraqlqlModelParams) {
     return {
       save:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
@@ -244,7 +246,7 @@ module.exports = {
    * @description This function is used to extend the the graphql schema properties methods
    * @returns Object
    */
-  properties: function ({${file}Model, CustomTypes: { ObjectType } }: any) {
+  properties: function ({${file}Model, CustomTypes: { ObjectType } }: ${file}GraqlqlModelParams) {
     return {
       update:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
@@ -336,10 +338,11 @@ includeFiles.getDictionary(
     }
 
     dbCollections = `${types.dbCollections(models)}`;
+    graphqlTypes = `${types.graphqlTypes(models)}`;
   }
 );
 
-let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}`;
+let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}  ${graphqlTypes}`;
 
 if (getState().modelTypes !== typeStr) {
   getState().setModelTypes(typeStr);
