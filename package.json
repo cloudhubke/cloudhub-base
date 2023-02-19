@@ -24,7 +24,8 @@
     "typescript": "4.4.3"
   },
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "prepublishOnly": "npm version patch"
   },
   "author": "gaithoben@gmail.com",
   "repository": {
