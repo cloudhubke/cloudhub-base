@@ -242,8 +242,7 @@ module.exports = {
         pkColumnName: string;
         schema: any;
         merchantcode: string;
-        MerchantCode: string;
-        MERCHANTCODE: string;
+        getMerchantCode: ()=>string;
         tenantcode: string;
         cache: boolean;
         globalId: string;
