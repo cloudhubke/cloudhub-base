@@ -155,8 +155,8 @@ module.exports = {
         [K in keyof T]?: T[K];
       }
 
-      type ObjectKey = ${"`${string}.${string}`;"}
-      type QueryVariable = ${"`$${string}`;"}
+      type ObjectKey = ${'`${string}.${string}`;'}
+      type QueryVariable = ${'`$${string}`;'}
 
      
       interface ModelFindCriteria {
@@ -539,7 +539,7 @@ module.exports = {
 
         collections = `${collections}
 
-        interface ${model.globalId}GraqlqlModelParams {
+        interface ${model.globalId}GraphqlModelParams {
           
           ModelProperties: IModels;
           ${model.globalId}Model: any;
@@ -566,7 +566,7 @@ module.exports = {
           ${Object.keys(models).reduce(
             (acc, key) => `${acc}
             ${models[key].globalId}Model: any;`,
-            ""
+            ''
           )}
         }
 
@@ -574,7 +574,7 @@ module.exports = {
           ${Object.keys(models).reduce(
             (acc, key) => `${acc}
             ${models[key].globalId}: any;`,
-            ""
+            ''
           )}
         }
          
