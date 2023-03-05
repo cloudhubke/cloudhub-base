@@ -1,28 +1,28 @@
 const rootDir = process.cwd();
-const fs = require("fs");
-const includeFiles = require("include-files");
-const types = require("./types");
-const { getState } = require("./store");
+const fs = require('fs');
+const includeFiles = require('include-files');
+const types = require('./types');
+const { getState } = require('./store');
 
 const globals = {};
 
-let oldStr = "";
+let oldStr = '';
 
-let modelTypes = "";
+let modelTypes = '';
 
-let dbCollections = "";
+let dbCollections = '';
 
-let graphqlTypes = "";
+let graphqlTypes = '';
 
 function ensureFolderExists(path, mask, cb) {
-  if (typeof mask == "function") {
+  if (typeof mask == 'function') {
     // Allow the `mask` parameter to be optional
     cb = mask;
     mask = 0o744;
   }
   fs.mkdir(path, mask, function (err) {
     if (err) {
-      if (err.code == "EEXIST") cb(null);
+      if (err.code == 'EEXIST') cb(null);
       // Ignore the error if the folder already exists
       else cb(err); // Something else went wrong
     } else cb(null); // Successfully created folder
@@ -34,7 +34,7 @@ function ensureSailsDts() {
     if (fs.existsSync(`${rootDir}/types/sails.d.ts`)) {
       //file exists
     } else {
-      const { exec } = require("child_process");
+      const { exec } = require('child_process');
       exec(
         `cp ${__dirname}/sails.d.ts ${rootDir}/types/sails.d.ts`,
         (err, stdout, stderr) => {
@@ -134,7 +134,7 @@ includeFiles.getDictionary(
         `${rootDir}/api/modelsoverride/merchantadmin/${folder}`,
         () => {
           const collections = Object.keys(models[folder]).filter(
-            (t) => !["identity", "globalId"].includes(t)
+            (t) => !['identity', 'globalId'].includes(t)
           );
 
           for (const collection of collections) {
@@ -171,8 +171,10 @@ includeFiles.getDictionary(
 function createGraphqlOverride({ url, file, definition }) {
   const isFile =
     Object.keys(definition).length === 2 &&
-    Object.keys(definition).includes("identity") &&
-    Object.keys(definition).includes("globalId");
+    Object.keys(definition).includes('identity') &&
+    Object.keys(definition).includes('globalId');
+
+  const doc = `${file}`.toLowerCase();
 
   if (isFile) {
     try {
@@ -189,7 +191,7 @@ module.exports = {
    * @description This function is used to extend the the graphql root methods of find, getOne, etc
    * @returns Object
    */
-  rootMethods: function ({${file}Model, CustomTypes: { ObjectType }}: ${file}GraqlqlModelParams) {
+  rootMethods: function ({ModelTypes: { ${file}Model }, CustomTypes: { ObjectType }}: ${file}GraqlqlModelParams) {
     return {
       save:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
@@ -199,15 +201,12 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // let doc:${file}ObjectInstance | null;
-          // let Model = ${file};
-          // if(merchantcode){
-          //   Model = _${file}(merchantcode);
-          // }
+          // let ${doc}:${file}ObjectInstance | null;
+      
           // if(params.id){
-          //   doc = await Model.findOne({ id: params.id });
-          //   if(doc){
-          //     await doc.update(params);
+          //   ${doc} = await _${file}(merchantcode).findOne({ id: params.id });
+          //   if(${doc}){
+          //     await ${doc}.update(params);
           //   }
           // }else{
           //   if (!params.RefNo) {
@@ -216,9 +215,9 @@ module.exports = {
             .substring(0, 2)
             .toUpperCase()}', merchantcode);
           //   }
-          //   doc = await Model.create(params).fetch();
+          //   ${doc} = await _${file}(merchantcode).create(params).fetch();
           // }
-          // return doc;
+          // return ${doc};
         },
       }),
       destroy: ({inputObject}: GraphqlModelMethodParams)=>({
@@ -229,14 +228,10 @@ module.exports = {
         },
         resolve: async (parent: any, { params }: any, { req }: {req: SailsRequest}) => {
           // const { merchantcode, ...headers } = req.headers;
-          // let Model = ${file};
-          // if(merchantcode){
-          //   Model = _${file}(merchantcode);
-          // }
-          // const docs = await Model.destroy({
+          // const ${doc}s = await _${file}(merchantcode).destroy({
           //   ...params,
           // }).fetch();
-          // return docs;
+          // return ${doc}s;
         },
       })
     };
@@ -246,7 +241,7 @@ module.exports = {
    * @description This function is used to extend the the graphql schema properties methods
    * @returns Object
    */
-  properties: function ({${file}Model, CustomTypes: { ObjectType } }: ${file}GraqlqlModelParams) {
+  properties: function ({ModelTypes: { ${file}Model }, CustomTypes: { ObjectType } }: ${file}GraqlqlModelParams) {
     return {
       update:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
@@ -279,7 +274,7 @@ module.exports = {
     });
 
     const files = Object.keys(definition).filter(
-      (t) => !["identity", "globalId"].includes(t)
+      (t) => !['identity', 'globalId'].includes(t)
     );
 
     for (const file of files) {
@@ -304,7 +299,7 @@ includeFiles.getDictionary(
     });
 
     const files = Object.keys(models).filter(
-      (t) => !["identity", "globalId"].includes(t)
+      (t) => !['identity', 'globalId'].includes(t)
     );
     for (const file of files) {
       const definition = models[file];
@@ -371,12 +366,12 @@ includeFiles.exists(
 
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parserOptions: {
     ecmaVersion: 8,
-    project: ["tsconfig.json"],
+    project: ['tsconfig.json'],
   },
   globals: {
     sails: true,
@@ -395,41 +390,41 @@ module.exports = {
     ...globals,
   },
   rules: {
-    "no-underscore-dangle": "off",
-    "no-await-in-loop": "off",
-    "import/no-cycle": 0,
-    quotes: "off",
-    "no-use-before-define": ["error", { functions: false, classes: true }],
-    "no-global-assign": "error",
-    "no-restricted-syntax": "off",
-    "import/no-extraneous-dependencies": "off",
-    "no-const-assign": "error",
-    "import/no-unresolved": "off",
-    "no-console": "off",
-    "prefer-destructuring": "off",
-    "no-async-promise-executor": "off",
-    "no-param-reassign": "off",
-    "object-curly-newline": "off",
-    "implicit-arrow-linebreak": "off",
-    "spaced-comment": "off",
-    "wrap-iife": "off",
-    "operator-linebreak": "off",
-    "no-useless-catch": "off",
-    "no-shadow": "off",
-    "arrow-body-style": "off",
-    "object-shorthand": "off",
-    "max-len": "off",
-    "global-require": "off",
-    "no-extend-native": "off",
-    indent: "off",
-    "func-names": ["error", "as-needed"],
-    "guard-for-in": "off",
+    'no-underscore-dangle': 'off',
+    'no-await-in-loop': 'off',
+    'import/no-cycle': 0,
+    quotes: 'off',
+    'no-use-before-define': ['error', { functions: false, classes: true }],
+    'no-global-assign': 'error',
+    'no-restricted-syntax': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'no-const-assign': 'error',
+    'import/no-unresolved': 'off',
+    'no-console': 'off',
+    'prefer-destructuring': 'off',
+    'no-async-promise-executor': 'off',
+    'no-param-reassign': 'off',
+    'object-curly-newline': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'spaced-comment': 'off',
+    'wrap-iife': 'off',
+    'operator-linebreak': 'off',
+    'no-useless-catch': 'off',
+    'no-shadow': 'off',
+    'arrow-body-style': 'off',
+    'object-shorthand': 'off',
+    'max-len': 'off',
+    'global-require': 'off',
+    'no-extend-native': 'off',
+    indent: 'off',
+    'func-names': ['error', 'as-needed'],
+    'guard-for-in': 'off',
     radix: [0],
-    "import/extensions": "off",
-    "import/prefer-default-export": "off",
-    "no-multi-assign": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-floating-promises": 2,
-    "@typescript-eslint/no-var-requires": "off",
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'no-multi-assign': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-floating-promises': 2,
+    '@typescript-eslint/no-var-requires': 'off',
   },
 };
