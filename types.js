@@ -316,13 +316,13 @@ module.exports = {
     }
 
     // These are the methods of an Object constructor eg. UserObject.findOne({id})
-      declare interface BaseObject <instance> {
-        create(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        getDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        getOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findOne(params: PartialInstance<instance>, merchantcode?:string): Promise<instance | null>;
-        findOneOrCreate(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
-        findDocument(params: PartialInstance<instance>, merchantcode?:string): Promise<instance>;
+      declare interface BaseObject <modelProps, instance> {
+        create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
+        getDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
+        getOne(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
+        findOne(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance | null>;
+        findOneOrCreate(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
+        findDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         searchFields: string[];
         modelDefaults: any;
         modelAttributes: {
@@ -345,7 +345,7 @@ module.exports = {
         /**
          * initialize a new instance of the model object with the given properties and methods
          */
-        initialize(params: instance, merchantcode?:string, initOne?:boolean): instance;
+        initialize(params: modelProps, merchantcode?:string, initOne?:boolean): instance;
 
     }      
 
@@ -655,7 +655,7 @@ module.exports = {
       type Extend${globalId}DboType = typeof Extend${globalId}Dbo;
 
 
-      interface ${globalId}Object extends BaseObject<${globalId}ObjectInstance>, Extend${globalId}ObjectType {
+      interface ${globalId}Object extends BaseObject<${globalId}Props, ${globalId}ObjectInstance>, Extend${globalId}ObjectType {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
