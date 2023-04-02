@@ -275,21 +275,21 @@ module.exports = {
       }
   
       // These are the methods of an Object constructor eg. UserDbo.findOne({id})
-      declare interface BaseDbo <instance> {
+      declare interface BaseDbo <modelProps, instance> {
         getSchema: () => any;
-        create(params: PartialInstance<instance>): instance;
-        create(from: any, to: any, params: PartialInstance<instance>): instance;
+        create(params: PartialInstance<modelProps>): instance;
+        create(from: any, to: any, params: PartialInstance<modelProps>): instance;
         getDocument(params: {
           [key: refKeys]: string;
         }, options?: {fireOnGetOne: boolean;}): instance;
         findDocument(params: {
           [key: refKeys]: string;
         }): instance;
-        findOne(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): instance | null;
-        firstExample(params: PartialInstance<instance>): instance;
-        find(params: string | ModelFindParams<instance> | OtherModelFindParams<instance>): ArangoDB.Cursor;
-        initialize(params: PartialInstance<instance>): instance;
-        extractKeyProps(params: PartialInstance<instance>): instance.keyProps;
+        findOne(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): instance | null;
+        firstExample(params: PartialInstance<modelProps>): instance;
+        find(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): ArangoDB.Cursor;
+        initialize(params: PartialInstance<modelProps>): instance;
+        extractKeyProps(params: PartialInstance<modelProps>): instance.keyProps;
     }  
 
       //End DBO BASE DECLARATIONS
@@ -676,7 +676,7 @@ module.exports = {
         getKeyProps(): ${globalId}KeyProps;
       }
 
-      interface ${globalId}Dbo extends BaseDbo<${globalId}DboInstance>, Extend${globalId}DboType  {
+      interface ${globalId}Dbo extends BaseDbo<${globalId}Props, ${globalId}DboInstance>, Extend${globalId}DboType  {
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         classType: 'Vertex';
