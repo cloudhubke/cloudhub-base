@@ -670,6 +670,8 @@ module.exports = {
      
      interface ${globalId}DboInstance extends BaseDboInstance, ${globalId}Props,  Extend${globalId}DboInstanceType {
         // [key: string]: any;
+        update(params: PartialInstance<${globalId}Props>, options?: UpdateOptions): void;
+        reInitialize(params: PartialInstance<${globalId}Props>): void; 
         globalId: '${globalId}';
         tableName: '${`${globalId}`.toLowerCase()}';
         keyProps: ${globalId}KeyProps;
