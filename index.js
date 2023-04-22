@@ -299,11 +299,14 @@ includeFiles.getDictionary(
       //
     });
 
-    const files = Object.keys(models).filter(
+    const modelKeys = Object.keys(models).filter(
       (t) => !['identity', 'globalId'].includes(t)
     );
-    for (const file of files) {
-      const definition = models[file];
+
+    for (const key of modelKeys) {
+      const definition = models[key];
+      const file = definition.globalId;
+
       createGraphqlOverride({
         url: `${rootDir}/api/graphql/${file}`,
         file,
