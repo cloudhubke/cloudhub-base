@@ -322,7 +322,7 @@ module.exports = {
          * @returns Promise<any>
          * @description This method is fired when the object is initialized and datastore is connected
          * 
-         * /
+         **/
         onDbConnect(params: Sails.ManagerInstance): Promise<any>;
 
         create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
