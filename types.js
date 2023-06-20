@@ -317,6 +317,14 @@ module.exports = {
 
     // These are the methods of an Object constructor eg. UserObject.findOne({id})
       declare interface BaseObject <modelProps, instance> {
+        /**
+         * @params { dsName, Transaction, dbConnection }
+         * @returns Promise<any>
+         * @description This method is fired when the object is initialized and datastore is connected
+         * 
+         * /
+        onDbConnect(params: Sails.ManagerInstance): Promise<any>;
+
         create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         getDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         getOne(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
