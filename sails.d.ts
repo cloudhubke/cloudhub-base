@@ -90,6 +90,7 @@ declare namespace Sails {
     cleanDatastore(): Promise<void>;
     tenantType: string;
     url: string;
+    path: string;
     config: any;
     vertices: Array<any>;
     bearerToken: string;
