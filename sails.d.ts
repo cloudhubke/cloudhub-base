@@ -90,7 +90,6 @@ declare namespace Sails {
     cleanDatastore(): Promise<void>;
     tenantType: string;
     url: string;
-    path: string;
     config: any;
     vertices: Array<any>;
     bearerToken: string;
@@ -329,6 +328,7 @@ declare namespace Sails {
     allowHalfOpen: boolean;
     method: string;
     url: string;
+    path: string;
     headers: Dictionary<any>;
     rawHeaders: string[];
     params: any;
