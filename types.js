@@ -167,6 +167,8 @@ module.exports = {
         $ne?: any;
         $like?: string;
         $notlike?: string;
+        $contains?: string;
+        $notcontains?: string;
         $in?: number[] | string[];
         in?: number[] | string[];
         $allin?: number[] | string[];
