@@ -287,7 +287,12 @@ module.exports = {
         }): instance;
         findOne(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): instance | null;
         firstExample(params: PartialInstance<modelProps>): instance;
-        find(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>): ArangoDB.Cursor;
+        find(params: string | ModelFindParams<modelProps> | OtherModelFindParams<modelProps>, options?: {
+          limit?: number;
+          skip?: number;
+          sort?: string | string[];
+          let?: any;
+        }): ArangoDB.Cursor;
         initialize(params: PartialInstance<modelProps>): instance;
         extractKeyProps(params: PartialInstance<modelProps>): instance.keyProps;
     }  
