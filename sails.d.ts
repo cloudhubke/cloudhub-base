@@ -280,19 +280,31 @@ declare namespace Sails {
     blast(eventName: string, data: any, socketToOmit: SocketIO.Socket): void;
 
     // http://sailsjs.org/documentation/reference/web-sockets/sails-sockets/sails-sockets-broadcast
-    broadcast(roomName: string, data: any): void;
-    broadcast(roomName: string, eventName: string, data: any): void;
-    broadcast(roomName: string, data: any, socketToOmit: SocketIO.Socket): void;
+    broadcast(roomNames: string | string[], data: any): void;
+    broadcast(roomNames: string | string[], eventName: string, data: any): void;
     broadcast(
-      roomName: string,
+      roomNames: string | string[],
+      data: any,
+      socketToOmit: SocketIO.Socket
+    ): void;
+    broadcast(
+      roomNames: string | string[],
       eventName: string,
       data: any,
       socketToOmit: SocketIO.Socket
     ): void;
 
     // http://sailsjs.org/documentation/reference/web-sockets/sails-sockets/sails-sockets-join
-    join(socket: SocketIO.Socket, roomName: string): boolean;
-    join(sockets: SocketIO.Socket[], roomName: string): boolean;
+    join(
+      socket: SocketIO.Socket,
+      roomName: string,
+      cb?: (err?: Error) => void
+    ): boolean;
+    join(
+      sockets: SocketIO.Socket[],
+      roomName: string,
+      cb?: (err?: Error) => void
+    ): boolean;
 
     // http://sailsjs.org/documentation/reference/web-sockets/sails-sockets/sails-sockets-emit
     emit(socketIds: string[], eventName: string, messageData: any): void;
