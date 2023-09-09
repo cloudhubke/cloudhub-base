@@ -523,10 +523,11 @@ module.exports = {
       }): instance;
 
 
-      declare const SystemSettings: {
-        [key: string]: any;
-      };
-
+  
+      interface ISystemSettings {
+        //
+      }
+      declare const SystemSettings: ISystemSettings;
 
       interface GraphqlModelMethodParams {
         inputObject: (params?: {

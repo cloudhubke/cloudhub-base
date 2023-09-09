@@ -85,7 +85,8 @@ declare namespace Sails {
     globalIds: Array<string>;
     graphName: string;
     aql: any;
-    getSystemSettings(): any;
+    SystemSettings: ISystemSettings;
+    getSystemSettings(): ISystemSettings;
     updateSystemSettings(params: any): void;
     cleanDatastore(): Promise<void>;
     tenantType: string;
