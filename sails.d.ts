@@ -88,7 +88,7 @@ declare namespace Sails {
     SystemSettings: ISystemSettings;
     getSystemSettings(): ISystemSettings;
     updateSystemSettings(
-      params: (SystemSettings?: ISystemSettings) =>
+      params: (SystemSettings: ISystemSettings) =>
         | {
             [key: string]: any;
           }
