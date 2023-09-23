@@ -88,9 +88,13 @@ declare namespace Sails {
     SystemSettings: ISystemSettings;
     getSystemSettings(): ISystemSettings;
     updateSystemSettings(
-      params: (SystemSettings?: ISystemSettings) => void | {
-        [key: string]: any;
-      }
+      params: (SystemSettings?: ISystemSettings) =>
+        | {
+            [key: string]: any;
+          }
+        | {
+            [key: string]: any;
+          }
     ): void;
     cleanDatastore(): Promise<void>;
     tenantType: string;
