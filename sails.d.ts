@@ -68,7 +68,7 @@ declare namespace winston {
 }
 
 declare namespace Sails {
-  type Database = import("arangojs/database").Database;
+  type Database = import('arangojs/database').Database;
 
   interface ManagerInstance {
     dbConnection: Database;
@@ -87,7 +87,11 @@ declare namespace Sails {
     aql: any;
     SystemSettings: ISystemSettings;
     getSystemSettings(): ISystemSettings;
-    updateSystemSettings(params: any): void;
+    updateSystemSettings(
+      params: (SystemSettings?: ISystemSettings) => void | {
+        [key: string]: any;
+      }
+    ): void;
     cleanDatastore(): Promise<void>;
     tenantType: string;
     url: string;
@@ -198,7 +202,7 @@ declare namespace Sails {
   }
 
   interface Routes extends Dictionary<Record<string, unknown> | string> {
-    "/csrfToken": CsrfToken;
+    '/csrfToken': CsrfToken;
   }
 
   interface SocketsConfig {
