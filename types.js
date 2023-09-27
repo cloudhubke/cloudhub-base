@@ -332,6 +332,15 @@ module.exports = {
          **/
         onDbConnect(params: Sails.ManagerInstance): Promise<any>;
 
+        /**
+         * @params asyncFunctionToExecute, interval
+         * @returns Promise<void>
+         * @description This method is fired when the object is initialized and datastore is connected
+         * use this function to run a function at a given interval
+         * 
+         **/
+        setInterval(asyncFunctionToExecute: (dbConnection: Sails.ManagerInstance)=>Promise<void>, interval: number): Promise<any>;
+
         create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         getDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         getOne(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
