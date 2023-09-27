@@ -339,7 +339,7 @@ module.exports = {
          * use this function to run a function at a given interval
          * 
          **/
-        createInterval(dbConnection: Sails.ManagerInstance)=>Promise<void>;
+        createInterval:(dbConnection: Sails.ManagerInstance)=>Promise<void>;
         interval: number;
 
         create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
