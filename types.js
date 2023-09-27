@@ -339,7 +339,7 @@ module.exports = {
          * use this function to run a function at a given interval
          * 
          **/
-        setInterval(asyncFunctionToExecute: (dbConnection: Sails.ManagerInstance)=>Promise<void>, interval: number): Promise<any>;
+        setInterval(asyncFunctionToExecute: (dbConnection: Sails.ManagerInstance)=>Promise<void>, interval: number): void;
 
         create(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         getDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
