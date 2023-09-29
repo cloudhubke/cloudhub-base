@@ -330,8 +330,7 @@ module.exports = {
          * @description This method is fired when the object is initialized and datastore is connected
          * 
          **/
-        onDbConnect(params: Sails.ManagerInstance): Promise<any>;
-
+        onDbConnect(dbConnection: Sails.ManagerInstance, onDone: ()=>void): Promise<any>;
         /**
          * @params asyncFunctionToExecute, interval
          * @returns Promise<void>
