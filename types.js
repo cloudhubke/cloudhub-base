@@ -331,7 +331,8 @@ module.exports = {
          * @description This method is fired when the object is initialized and datastore is connected
          * 
          **/
-        onDbConnect(dbConnection: Sails.ManagerInstance, onDbConnectCb: ()=>void): Promise<()=void>;
+        
+        onDbConnect(dbConnection: Sails.ManagerInstance, onDbConnectCb: ()=>boolean): Promise<boolean>;
         /**
          * @params asyncFunctionToExecute, interval
          * @returns Promise<void>
@@ -339,7 +340,8 @@ module.exports = {
          * use this function to run a function at a given interval
          * 
          **/
-        onDbConnectCb: ()=>void;
+
+        onDbConnectCb: ()=>boolean;
         
         createInterval:(dbConnection: Sails.ManagerInstance)=>Promise<void>;
         interval: number;
