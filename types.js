@@ -339,6 +339,8 @@ module.exports = {
          * use this function to run a function at a given interval
          * 
          **/
+        onDbConnectCb: ()=>void;
+        
         createInterval:(dbConnection: Sails.ManagerInstance)=>Promise<void>;
         interval: number;
 
