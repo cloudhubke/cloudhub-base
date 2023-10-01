@@ -34,15 +34,13 @@ function ensureSailsDts() {
     const { exec } = require('child_process');
     if (fs.existsSync(`${rootDir}/types/sails.d.ts`)) {
       //file exists
-      exec(
-        `rm ${rootDir}/types/sails.d.ts`,
-        (err, stdout, stderr) => {
-          if (err) {
-            console.log(`Could not remove sails.d.ts file`);
-          }
+      exec(`rm ${rootDir}/types/sails.d.ts`, (err, stdout, stderr) => {
+        if (err) {
+          console.log(`Could not remove sails.d.ts file`);
         }
+      });
     }
-    
+
     exec(
       `cp ${__dirname}/sails.d.ts ${rootDir}/types/sails.d.ts`,
       (err, stdout, stderr) => {
@@ -348,6 +346,7 @@ includeFiles.getDictionary(
   }
 );
 let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}  ${graphqlTypes}`;
+
 if (getState().modelTypes !== typeStr) {
   getState().setModelTypes(typeStr);
   try {
