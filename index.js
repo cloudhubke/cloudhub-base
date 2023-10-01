@@ -347,9 +347,7 @@ includeFiles.getDictionary(
     graphqlTypes = `${types.graphqlTypes(models)}`;
   }
 );
-
 let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}  ${graphqlTypes}`;
-
 if (getState().modelTypes !== typeStr) {
   getState().setModelTypes(typeStr);
   try {
