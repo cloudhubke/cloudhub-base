@@ -326,13 +326,11 @@ module.exports = {
       declare interface BaseObject <modelProps, instance> {
         /**
          * @params { dsName, Transaction, dbConnection }
-         * @returns Promise<()=>void>
-         * return Object.onDbConnectCb()
+         * @returns Promise<void>
          * @description This method is fired when the object is initialized and datastore is connected
          * 
          **/
-        
-        onDbConnect(dbConnection: Sails.ManagerInstance, onDbConnectCb: ()=>boolean): Promise<boolean>;
+        onDbConnect(dbConnection: Sails.ManagerInstance): Promise<void>;
         /**
          * @params asyncFunctionToExecute, interval
          * @returns Promise<void>
@@ -341,8 +339,6 @@ module.exports = {
          * 
          **/
 
-        onDbConnectCb: ()=>boolean;
-        
         createInterval:(dbConnection: Sails.ManagerInstance)=>Promise<void>;
         interval: number;
 
