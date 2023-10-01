@@ -31,19 +31,26 @@ function ensureFolderExists(path, mask, cb) {
 
 function ensureSailsDts() {
   try {
+    const { exec } = require('child_process');
     if (fs.existsSync(`${rootDir}/types/sails.d.ts`)) {
       //file exists
-    } else {
-      const { exec } = require('child_process');
       exec(
-        `cp ${__dirname}/sails.d.ts ${rootDir}/types/sails.d.ts`,
+        `rm ${rootDir}/types/sails.d.ts`,
         (err, stdout, stderr) => {
           if (err) {
-            console.log(`Could not create sails.d.ts file`);
+            console.log(`Could not remove sails.d.ts file`);
           }
         }
-      );
     }
+    
+    exec(
+      `cp ${__dirname}/sails.d.ts ${rootDir}/types/sails.d.ts`,
+      (err, stdout, stderr) => {
+        if (err) {
+          console.log(`Could not create sails.d.ts file`);
+        }
+      }
+    );
   } catch (err) {
     // nothing to do
   }
