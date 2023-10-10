@@ -8,6 +8,8 @@ const globals = {};
 
 let oldStr = '';
 
+let baseDeclarations = '';
+
 let modelTypes = '';
 
 let dbCollections = '';
@@ -344,11 +346,14 @@ includeFiles.getDictionary(
       modelTypes = `${modelTypes}${types.modelTypes(model.globalId)}`;
     }
 
+    baseDeclarations = types.baseDeclarations(models);
+
     dbCollections = `${types.dbCollections(models)}`;
     graphqlTypes = `${types.graphqlTypes(models)}`;
   }
 );
-let typeStr = `${types.baseDeclarations()} ${modelTypes} ${dbCollections}  ${graphqlTypes}`;
+
+let typeStr = `${baseDeclarations} ${modelTypes} ${dbCollections}  ${graphqlTypes}`;
 
 if (getState().modelTypes !== typeStr) {
   getState().setModelTypes(typeStr);

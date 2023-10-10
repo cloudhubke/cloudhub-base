@@ -1,5 +1,18 @@
 module.exports = {
-  baseDeclarations: function () {
+  baseDeclarations: function (models) {
+    function renderDatastoreModels() {
+      let str = ``;
+      for (const key in models) {
+        const model = models[key];
+
+        str = `${str}
+            _${model.globalId}: BaseModelMethods<${model.globalId}Props, ${model.globalId}ObjectInstance>;
+        `;
+      }
+
+      return str;
+    }
+
     const baseVertex = `
 
     /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -252,6 +265,9 @@ module.exports = {
         classType: string;
         _Transaction(params: TransactionParams): Promise<any>;
         _dbConnection: Database;
+
+        //Other models
+        ${renderDatastoreModels()}
       }
   
       declare interface BaseEdgeObjectInstance extends BaseObjectInstance, BaseEdge {
@@ -658,6 +674,7 @@ module.exports = {
       interface Base${globalId}ObjectInstance extends BaseObjectInstance, ${globalId}Props {
         getKeyProps(): ${globalId}KeyProps;
         keyProps: ${globalId}KeyProps;
+
       }
 
       interface Base${globalId}DboInstance extends BaseDboInstance, ${globalId}Props {
