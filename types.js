@@ -311,8 +311,8 @@ module.exports = {
           sort?: string | string[];
           let?: any;
         }): ArangoDB.Cursor;
-        sum: (numericalKey: string, filterParams:ModelFindParams<modelProps> | OtherModelFindParams<modelProps>) => number;
-        avg: (numericalKey: string, filterParams:ModelFindParams<modelProps> | OtherModelFindParams<modelProps>) => number;
+        sum: (numericalKey: keyof modelProps, filterParams:ModelFindParams<modelProps> | OtherModelFindParams<modelProps>) => number;
+        avg: (numericalKey: keyof modelProps, filterParams:ModelFindParams<modelProps> | OtherModelFindParams<modelProps>) => number;
         initialize(params: PartialInstance<modelProps>): instance;
         extractKeyProps(params: PartialInstance<modelProps>): instance.keyProps;
     }  
