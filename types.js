@@ -562,12 +562,13 @@ module.exports = {
        * this is a global object to declare functions that may not be associated with any model
        * Can only be used in dbobjects
        * @example
-       * GlobalServices.myFunction = function(){}
+       * DboServices.myFunction = function(){}
        **/
-      interface IGlobalServices {
+      interface IDboServices {
         dateFunctions: ()=>void;
       }
-      declare const GlobalServices: IGlobalServices = {
+
+      declare const DboServices: IDboServices = {
       //   myFunction: function () {},
       };
 
