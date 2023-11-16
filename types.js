@@ -558,6 +558,10 @@ module.exports = {
       
       declare const SystemSettings: ISystemSettings;
 
+
+      interface IDboServiceInstance {
+        getKeys: (params: any) => any;
+      }
       /**
        * this is a global object to declare functions that may not be associated with any model
        * Can only be used in dbobjects
@@ -565,8 +569,9 @@ module.exports = {
        * DboService.myFunction = function(){}
        **/
       interface IDboService {
-        dateFunctions: ()=>void;
+        prototype: IDboServiceInstance;
       }
+ 
 
       declare const DboService: IDboService = {
       //   myFunction: function () {},
