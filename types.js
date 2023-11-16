@@ -557,6 +557,15 @@ module.exports = {
       }
       declare const SystemSettings: ISystemSettings;
 
+      /**
+       * this is a global object to declare functions that may not be associated with any model
+       * @example
+       * GlobalServices.myFunction = function(){}
+       **/
+      declare const GlobalServices: {
+        // [key: string]: any;
+      };
+
       interface GraphqlModelMethodParams {
         inputObject: (params?: {
           [key: string]: {
