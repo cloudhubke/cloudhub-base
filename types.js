@@ -564,9 +564,11 @@ module.exports = {
        * @example
        * GlobalServices.myFunction = function(){}
        **/
-
-      declare const GlobalServices: {
-        // [key: string]: any;
+      interface IGlobalServices {
+        dateFunctions: ()=>void;
+      }
+      declare const GlobalServices: IGlobalServices = {
+      //   myFunction: function () {},
       };
 
       type DateDurations = 'years' | 'months'| 'weeks'| 'days'| 'hours'| 'minutes'| 'seconds'| 'milliseconds';
