@@ -555,16 +555,34 @@ module.exports = {
       interface ISystemSettings {
         //
       }
+      
       declare const SystemSettings: ISystemSettings;
 
       /**
        * this is a global object to declare functions that may not be associated with any model
+       * Can only be used in dbobjects
        * @example
        * GlobalServices.myFunction = function(){}
        **/
+
       declare const GlobalServices: {
         // [key: string]: any;
       };
+
+      type DateDurations = 'years' | 'months'| 'weeks'| 'days'| 'hours'| 'minutes'| 'seconds'| 'milliseconds';
+
+      interface Date {
+        add(length: number, duration: DateDurations): Date;
+
+        /**
+         * @example
+         * const date = new Date();
+         * const date2 = new Date();
+         * const diff = date.diff(date2, 'days');
+         * the result will be the number of days between date and date2
+         **/
+        diff(Timestamp: number, duration: DateDurations): number;
+      }
 
       interface GraphqlModelMethodParams {
         inputObject: (params?: {
