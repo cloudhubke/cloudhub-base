@@ -570,6 +570,8 @@ module.exports = {
        **/
       interface IDboService {
         prototype: IDboServiceInstance;
+        beforeDbosRegistration: () => void;
+        afterDbosRegistration: () => void;
       }
  
 
