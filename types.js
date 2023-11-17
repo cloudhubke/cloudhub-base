@@ -569,6 +569,7 @@ module.exports = {
        * DboService.myFunction = function(){}
        **/
       interface IDboService {
+        tenantType: string;
         prototype: IDboServiceInstance;
         beforeDbosRegistration: () => void;
         afterDbosRegistration: () => void;
