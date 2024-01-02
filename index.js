@@ -115,15 +115,12 @@ function ensureTsConfigExists() {
 
 ensureFolderExists(`${rootDir}/api/modelsoverride`, () => {
   ensureFolderExists(`${rootDir}/api/modelsoverride/admin`, () => null);
-  ensureFolderExists(`${rootDir}/api/modelsoverride/merchantadmin`, () => null);
+  ensureFolderExists(`${rootDir}/api/modelsoverride/modules`, () => null);
 });
 
 ensureFolderExists(`${rootDir}/api/dbobjectsoverride`, () => {
   ensureFolderExists(`${rootDir}/api/dbobjectsoverride/admin`, () => null);
-  ensureFolderExists(
-    `${rootDir}/api/dbobjectsoverride/merchantadmin`,
-    () => null
-  );
+  ensureFolderExists(`${rootDir}/api/dbobjectsoverride/modules`, () => null);
 });
 
 ensureFolderExists(`${rootDir}/types`, () => null);
@@ -133,7 +130,7 @@ ensureSailsDts();
 
 includeFiles.getDictionary(
   {
-    dirname: `${rootDir}/api/models/merchantadmin`,
+    dirname: `${rootDir}/api/models/modules`,
     filter: /(.*).(ts|js)(?<!\.d\.ts)$/,
     replaceExpr: /^.*\//,
   },
@@ -141,7 +138,7 @@ includeFiles.getDictionary(
     const folders = Object.keys(models);
     for (const folder of folders) {
       ensureFolderExists(
-        `${rootDir}/api/modelsoverride/merchantadmin/${folder}`,
+        `${rootDir}/api/modelsoverride/modules/${folder}`,
         () => {
           const collections = Object.keys(models[folder]).filter(
             (t) => !['identity', 'globalId'].includes(t)
@@ -151,13 +148,13 @@ includeFiles.getDictionary(
             try {
               if (
                 fs.existsSync(
-                  `${rootDir}/api/modelsoverride/merchantadmin/${folder}/${collection}.ts`
+                  `${rootDir}/api/modelsoverride/modules/${folder}/${collection}.ts`
                 )
               ) {
                 //file exists
               } else {
                 fs.writeFile(
-                  `${rootDir}/api/modelsoverride/merchantadmin/${folder}/${collection}.ts`,
+                  `${rootDir}/api/modelsoverride/modules/${folder}/${collection}.ts`,
                   `module.exports = {
                     tenantType:[],
                     attributes: {},              
