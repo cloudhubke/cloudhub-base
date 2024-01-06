@@ -589,11 +589,11 @@ module.exports = {
         /**
          * @example
          * const date = new Date();
-         * const date2 = new Date();
-         * const diff = date.diff(date2, 'days');
-         * the result will be the number of days between date and date2
+         * const futuredate = new Date().valueOf() + 10000;
+         * const diff = date.diff(futuredate, 'days');
+         * the result will be the number of days between date and futuredate
          **/
-        diff(Timestamp: number, duration: DateDurations): number;
+        diff(FutureTimestamp: number, duration: DateDurations): number;
       }
 
       interface GraphqlModelMethodParams {
