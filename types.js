@@ -368,6 +368,7 @@ module.exports = {
         findOneOrCreate(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         findDocument(params: PartialInstance<modelProps>, merchantcode?:string): Promise<instance>;
         searchFields: string[];
+        tenantType: string[];
         modelDefaults: any;
         modelAttributes: {
           type: string;
