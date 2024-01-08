@@ -123,7 +123,10 @@ ensureFolderExists(`${rootDir}/api/dbobjectsoverride`, () => {
   ensureFolderExists(`${rootDir}/api/dbobjectsoverride/modules`, () => null);
 });
 
-ensureFolderExists(`${rootDir}/api/graphqloverride`, () => null);
+ensureFolderExists(`${rootDir}/api/graphqloverride`, () => {
+  ensureFolderExists(`${rootDir}/api/graphqloverride/admin`, () => null);
+  ensureFolderExists(`${rootDir}/api/graphqloverride/modules`, () => null);
+});
 ensureFolderExists(`${rootDir}/types`, () => null);
 
 ensureTsConfigExists();
