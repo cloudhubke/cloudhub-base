@@ -734,7 +734,7 @@ module.exports = {
 
       // THESE ARE FOR WATERLINE MODELS
       declare let ${globalId}: BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
-      declare function _${globalId}(merchantcode: string): BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
+      declare function _${globalId}(merchantcode: string | undefined | null): BaseModelMethods<${globalId}Props, ${globalId}ObjectInstance>;
 
       type Extend${globalId}ObjectType = typeof Extend${globalId}Object;
       type Extend${globalId}DboType = typeof Extend${globalId}Dbo;
