@@ -390,7 +390,7 @@ module.exports = {
         /**
          * initialize a new instance of the model object with the given properties and methods
          */
-        initialize(params: modelProps, merchantcode?:string, initOne?:boolean): instance;
+        initialize(params: modelProps, merchantcode:string | undefined, initOne?:boolean): instance;
 
     }      
 
