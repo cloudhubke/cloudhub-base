@@ -202,7 +202,7 @@ module.exports = {
    * @description This function is used to extend the the graphql root methods of find, getOne, etc
    * @returns Object
    */
-  rootMethods: function ({ModelTypes: { ${file}Model }, CustomTypes: { ObjectType }}: ${file}GraphqlModelParams) {
+  rootMethods: function ({ModelTypes: { ${file}Model }, FindResults, CustomTypes: { ObjectType, AnyDocumentType, AnyValueType }}: ${file}GraphqlModelParams) {
     return {
       save:  ({inputObject}: GraphqlModelMethodParams)=>({
         type: ${file}Model,
