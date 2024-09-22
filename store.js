@@ -1,9 +1,9 @@
-const create = require("zustand/vanilla").default;
+const createStore = require('./packages/zustand/vanilla').default;
 
-const store = create((set) => ({
+const store = createStore((set) => ({
   modelTypes: 0,
   setModelTypes: (str) => set(() => ({ modelTypes: str })),
-  test: "test",
+  test: 'test',
   setTest: (str) => set(() => ({ test: str })),
 }));
 
